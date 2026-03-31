@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Coin_Budgetra">
         <activity
+            android:name=".Dashboard_Module"
+            android:exported="false" />
+        <activity
             android:name=".Signup_module"
             android:exported="false" />
         <activity

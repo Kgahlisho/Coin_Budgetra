@@ -11,70 +11,104 @@
         android:id="@+id/TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="53dp"
+        android:layout_marginEnd="141dp"
         android:text="Coin Budgetra"
         android:textSize="20sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="140dp"
-        tools:layout_editor_absoluteY="53dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="133dp"
         android:text="Budgetra Made Simple."
-        tools:layout_editor_absoluteX="132dp"
-        tools:layout_editor_absoluteY="93dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TextView" />
 
     <EditText
         android:id="@+id/editTextText"
         android:layout_width="245dp"
         android:layout_height="35dp"
+        android:layout_marginStart="83dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="83dp"
         android:ems="10"
         android:hint="Enter your Email"
         android:inputType="text"
-        tools:layout_editor_absoluteX="83dp"
-        tools:layout_editor_absoluteY="314dp" />
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <EditText
         android:id="@+id/editTextText2"
         android:layout_width="245dp"
         android:layout_height="35dp"
+        android:layout_marginStart="83dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="83dp"
         android:ems="10"
         android:hint="Enter Password"
         android:inputType="text"
-        tools:layout_editor_absoluteX="83dp"
-        tools:layout_editor_absoluteY="374dp" />
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="188dp"
+        android:layout_marginTop="154dp"
+        android:layout_marginEnd="188dp"
         android:text="Login"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="188dp"
-        tools:layout_editor_absoluteY="266dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="163dp"
         android:text="Login"
-        tools:layout_editor_absoluteX="160dp"
-        tools:layout_editor_absoluteY="428dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="155dp"
         android:text="Sign up"
-        tools:layout_editor_absoluteX="160dp"
-        tools:layout_editor_absoluteY="638dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="201dp"
         android:layout_height="34dp"
+        android:layout_marginStart="105dp"
+        android:layout_marginTop="119dp"
+        android:layout_marginEnd="105dp"
         android:text="If you dont have an account sign up here :"
-        tools:layout_editor_absoluteX="105dp"
-        tools:layout_editor_absoluteY="595dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

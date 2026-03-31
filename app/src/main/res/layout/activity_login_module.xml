@@ -36,22 +36,23 @@
     <EditText
         android:id="@+id/editTextText"
         android:layout_width="245dp"
-        android:layout_height="35dp"
+        android:layout_height="40dp"
         android:layout_marginStart="83dp"
         android:layout_marginTop="29dp"
         android:layout_marginEnd="83dp"
         android:ems="10"
         android:hint="Enter your Email"
         android:inputType="text"
-        android:textSize="10sp"
+        android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <EditText
         android:id="@+id/editTextText2"
         android:layout_width="245dp"
-        android:layout_height="35dp"
+        android:layout_height="48dp"
         android:layout_marginStart="83dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="83dp"

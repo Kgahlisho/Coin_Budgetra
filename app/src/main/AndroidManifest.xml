@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Coin_Budgetra">
         <activity
+            android:name=".Signup_module"
+            android:exported="false" />
+        <activity
+            android:name=".Login_module"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

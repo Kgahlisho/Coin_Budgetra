@@ -14,24 +14,22 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="148dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="149dp"
         android:text="Coin Budgetra"
-        android:textSize="15sp"
+        android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="172dp"
-        android:layout_height="207dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_marginStart="10dp"
+        app:layout_editor_absoluteX="20dp"
         app:cardCornerRadius="12dp"
-        app:cardElevation="6dp"
-        app:layout_constraintDimensionRatio="w,1:1"
-        app:layout_constraintStart_toStartOf="parent"
+        app:cardElevation="9dp"
+        app:layout_constraintEnd_toEndOf="Parent"
+        app:layout_constraintStart_toStartOf="Parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView2">
 
 
@@ -80,15 +78,11 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView3"
         android:layout_width="200dp"
-        android:layout_height="207dp"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="213dp"
         app:cardCornerRadius="12dp"
-        app:cardElevation="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/cardView2">
+        app:cardElevation="9dp"
+        tools:layout_editor_absoluteX="195dp"
+        tools:layout_editor_absoluteY="286dp">
 
         <TextView
             android:id="@+id/textView12"
@@ -107,21 +101,18 @@
         android:id="@+id/cardView2"
         android:layout_width="375dp"
         android:layout_height="165dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginTop="64dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11">
+        app:layout_constraintTop_toBottomOf="@+id/textView11"
+        tools:layout_editor_absoluteX="18dp">
 
         <TextView
             android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="25sp"
             android:text="Welcome back , John Doe."
 
             android:textSize="10dp" />
@@ -131,7 +122,7 @@
         android:id="@+id/imageView4"
         android:layout_width="45dp"
         android:layout_height="39dp"
-        android:layout_marginStart="87dp"
+        android:layout_marginStart="88dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"

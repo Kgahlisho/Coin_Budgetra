@@ -16,7 +16,7 @@
         android:layout_marginEnd="105dp"
         android:text="WELCOME TO COIN BUDGETRA."
         android:textAlignment="center"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

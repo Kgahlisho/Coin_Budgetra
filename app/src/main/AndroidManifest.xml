@@ -12,6 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Coin_Budgetra">
         <activity
+            android:name=".Create_Expense"
+            android:exported="false" />
+        <activity
+            android:name=".Challenges_Module"
+            android:exported="false" />
+        <activity
+            android:name=".Finance_Module"
+            android:exported="false" />
+        <activity
+            android:name=".Expense_Module"
+            android:exported="false" />
+        <activity
             android:name=".Dashboard_Module"
             android:exported="false" />
         <activity

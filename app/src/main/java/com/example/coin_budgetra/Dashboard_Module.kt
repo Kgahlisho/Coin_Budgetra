@@ -33,9 +33,9 @@ class Dashboard_Module : AppCompatActivity() {
         }
 
 
-        val btnOther = this.findViewById<Button>(R.id.button7)
-        btnOther.setOnClickListener {
-            val intent = Intent(this, Expense_Module::class.java)
+        val btnPersonalGoals = this.findViewById<Button>(R.id.button7)
+        btnPersonalGoals.setOnClickListener {
+            val intent = Intent(this, personal_goals_Module::class.java)
             startActivity(intent);
         }
 

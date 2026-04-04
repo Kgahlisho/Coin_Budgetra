@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Coin_Budgetra">
         <activity
+            android:name=".Add_goal"
+            android:exported="false" />
+        <activity
             android:name=".personal_goals_Module"
             android:exported="false" />
         <activity

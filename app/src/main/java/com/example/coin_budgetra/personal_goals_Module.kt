@@ -19,13 +19,19 @@ class personal_goals_Module : AppCompatActivity() {
             insets
         }
 
-
         val btnBackdash = this.findViewById<Button>(R.id.button16)
 
         btnBackdash.setOnClickListener{
         val intent = Intent(this, Dashboard_Module::class.java)
         startActivity(intent);
 
+        }
+
+        val btnCancell = this.findViewById<Button>(R.id.button18)
+
+        btnCancell.setOnClickListener {
+            val intent = Intent(this, Dashboard_Module::class.java)
+            startActivity(intent);
         }
     }
 }

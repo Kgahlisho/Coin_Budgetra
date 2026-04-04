@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Login_module">
 
-    <TextView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,6 +17,8 @@
         android:text="Coin Budgetra"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/CircleImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

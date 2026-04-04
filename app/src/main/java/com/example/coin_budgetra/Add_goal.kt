@@ -23,6 +23,13 @@ class Add_goal : AppCompatActivity() {
         }
 
 
+        val btnbackk = this.findViewById<Button>(R.id.button33)
+            btnbackk.setOnClickListener {
+            val intent = Intent (this, personal_goals_Module::class.java)
+            startActivity(intent);
+        }
+
+
         val goalName = this.findViewById<EditText>(R.id.editTextText17)
         val goalAmount = this.findViewById<EditText>(R.id.editTextText18)
         val saveBtn = this.findViewById<Button>(R.id.button19)

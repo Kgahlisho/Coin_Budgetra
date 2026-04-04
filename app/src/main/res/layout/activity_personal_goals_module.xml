@@ -25,7 +25,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
     <EditText
-        android:id="@+id/inputGoalName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Goal name (e.g Laptop)"
@@ -146,6 +145,26 @@
         android:text="R4,000 saved"
         android:textSize="12sp"
         android:layout_marginTop="4dp"/>
+
+        <EditText
+            android:id="@+id/inputAddAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Add amount"
+            android:inputType="number"
+            android:textSize="12sp"
+            android:layout_marginTop="12dp"/>
+
+        <Button
+            android:id="@+id/buttonAddMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Money"
+            android:textSize="10sp"
+            android:layout_marginTop="8dp"/>
+
+
+
 
     </LinearLayout>
     </androidx.cardview.widget.CardView>

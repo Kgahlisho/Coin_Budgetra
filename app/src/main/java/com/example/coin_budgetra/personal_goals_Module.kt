@@ -25,9 +25,48 @@ class personal_goals_Module : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
-
-
         }
+
+        val inputAddAmount = this.findViewById<EditText>(R.id.inputAddAmount)
+        val buttonAddMoney = this.findViewById<Button>(R.id.buttonAddMoney)
+        val progressBar = this.findViewById<ProgressBar>(R.id.progressGoal)
+        val txtProgress = this.findViewById<TextView>(R.id.txtProgress)
+
+        buttonAddMoney.setOnClickListener {
+            if (targetAmount == 0){
+                Toast.makeText(this, "Create a goal first" , Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val addValue = inputAddAmount.text.toString()
+
+            if(addValue.isEmpty()){
+                Toast.makeText(this, "Enter amount" , Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val amountToAdd = try {
+                addValue.toInt()
+
+            }catch(e:Exception){
+                Toast.makeText(this, "Invalid number" , Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            savedAmount += amountToAdd
+
+            if (savedAmount > targetAmount){
+                savedAmount = targetAmount
+            }
+
+            val progress = (savedAmount * 100) / targetAmount
+
+            progressBar.progress = progress
+            txtProgress.text = "R$savedAmount saved"
+
+            inputAddAmount.text.clear()
+        }
+
+
 
         val btnBackdash = this.findViewById<Button>(R.id.button16)
 

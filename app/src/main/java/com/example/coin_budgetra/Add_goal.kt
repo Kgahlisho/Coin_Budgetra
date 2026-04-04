@@ -22,6 +22,7 @@ class Add_goal : AppCompatActivity() {
             insets
         }
 
+
         val goalName = this.findViewById<EditText>(R.id.editTextText17)
         val goalAmount = this.findViewById<EditText>(R.id.editTextText18)
         val saveBtn = this.findViewById<Button>(R.id.button19)
@@ -46,4 +47,3 @@ class Add_goal : AppCompatActivity() {
         }
     }
 }
-

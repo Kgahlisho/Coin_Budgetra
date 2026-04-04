@@ -30,7 +30,7 @@
         android:layout_marginStart="132dp"
         android:layout_marginTop="13dp"
         android:layout_marginEnd="133dp"
-        android:text="Budgetra Made Simple."
+        android:text="Budgeting Made Simple."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TextView" />
@@ -116,15 +116,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
+
         android:id="@+id/imageView"
         android:layout_width="95dp"
         android:layout_height="87dp"
         android:layout_marginStart="158dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="158dp"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/CircleImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
         app:srcCompat="@drawable/coinbudgetra" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

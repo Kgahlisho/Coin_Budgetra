@@ -1,6 +1,8 @@
 package com.example.coin_budgetra
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,6 +17,13 @@ class Create_Expense : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        val btnCanceller = this.findViewById<Button>(R.id.button11)
+
+        btnCanceller.setOnClickListener {
+            val intent = Intent(this, Expense_Module::class.java)
+            startActivity(intent);
         }
     }
 }

@@ -19,16 +19,12 @@ class Challenges_Module : AppCompatActivity() {
             insets
         }
 
-        val btnCreateGoal = this.findViewById<Button>(R.id.button13)
-        btnCreateGoal.setOnClickListener {
-            val intent = Intent(this, Challenges_Module::class.java)
-            startActivity(intent);
+        findViewById<Button>(R.id.button13).setOnClickListener {
+            startActivity(Intent(this, Challenges_dash::class.java))
         }
 
-        val btnCancel = this.findViewById<Button>(R.id.button14)
-        btnCancel.setOnClickListener {
-            val intent = Intent(this, Dashboard_Module::class.java)
-            startActivity(intent);
+        findViewById<Button>(R.id.button14).setOnClickListener {
+            startActivity(Intent(this, Dashboard_Module::class.java))
         }
     }
 }

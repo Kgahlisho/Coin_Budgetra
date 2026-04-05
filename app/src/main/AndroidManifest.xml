@@ -11,54 +11,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Coin_Budgetra">
-        <activity
-            android:name=".GoalAdapter"
-            android:exported="false" />
-        <activity
-            android:name=".Goals"
-            android:exported="false" />
-        <activity
-            android:name=".Goal"
-            android:exported="false" />
-        <activity
-            android:name=".Challenges_dash"
-            android:exported="false" />
-        <activity
-            android:name=".Add_goal"
-            android:exported="false" />
-        <activity
-            android:name=".personal_goals_Module"
-            android:exported="false" />
-        <activity
-            android:name=".Create_Expense"
-            android:exported="false" />
-        <activity
-            android:name=".Challenges_Module"
-            android:exported="false" />
-        <activity
-            android:name=".Finance_Module"
-            android:exported="false" />
-        <activity
-            android:name=".Expense_Module"
-            android:exported="false" />
-        <activity
-            android:name=".Dashboard_Module"
-            android:exported="false" />
-        <activity
-            android:name=".Signup_module"
-            android:exported="false" />
-        <activity
-            android:name=".Login_module"
-            android:exported="false" />
+
+        <activity android:name=".Challenges_dash" android:exported="false" />
+        <activity android:name=".Add_goal" android:exported="false" />
+        <activity android:name=".personal_goals_Module" android:exported="false" />
+        <activity android:name=".Create_Expense" android:exported="false" />
+        <activity android:name=".Challenges_Module" android:exported="false" />
+        <activity android:name=".Finance_Module" android:exported="false" />
+        <activity android:name=".Expense_Module" android:exported="false" />
+        <activity android:name=".Dashboard_Module" android:exported="false" />
+        <activity android:name=".Signup_module" android:exported="false" />
+        <activity android:name=".Login_module" android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

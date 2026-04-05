@@ -7,8 +7,8 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 
 
-class GoalAdapter(private val goals: MutableList<Goal>):
-        RecyclerView.Adapter<GoalAdapter.GoalViewHolder>(){
+class GoalAdapter(private val goals: MutableList<Goal>) :
+    RecyclerView.Adapter<GoalAdapter.GoalViewHolder>() {
 
     class GoalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtName: TextView = itemView.findViewById(R.id.txtGoalName)
@@ -37,7 +37,11 @@ class GoalAdapter(private val goals: MutableList<Goal>):
         holder.txtCategory.text = goal.category
         holder.txtTarget.text = "Target: R${goal.targetAmount}"
 
-        val progress = (goal.savedAmount * 100) / goal.targetAmount
+
+
+        val progress = if (goal.targetAmount > 0) {
+            (goal.savedAmount * 100) / goal.targetAmount
+        } else 0
         holder.progressBar.progress = progress
 
         holder.btnAdd.setOnClickListener {
@@ -48,30 +52,31 @@ class GoalAdapter(private val goals: MutableList<Goal>):
                 return@setOnClickListener
             }
 
+
             val amountToAdd = try {
                 input.toInt()
-            } catch (e: Exception) {
+            } catch (e: NumberFormatException) {
                 Toast.makeText(holder.itemView.context, "Invalid number", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
+
             goal.savedAmount += amountToAdd
+            if (goal.savedAmount > goal.targetAmount) goal.savedAmount = goal.targetAmount
 
-            if (goal.savedAmount > goal.targetAmount) {
-                goal.savedAmount = goal.targetAmount
-            }
-
-            val newProgress = (goal.savedAmount * 100) / goal.targetAmount
+            val newProgress = if (goal.targetAmount > 0) {
+                (goal.savedAmount * 100) / goal.targetAmount
+            } else 0
             holder.progressBar.progress = newProgress
-
             holder.inputAdd.text.clear()
         }
+
 
         holder.btnDelete.setOnClickListener {
             val currentPosition = holder.adapterPosition
             if (currentPosition != RecyclerView.NO_POSITION) {
-                goals.removeAt(position)
-                notifyItemRemoved(position)
+                goals.removeAt(currentPosition)
+                notifyItemRemoved(currentPosition)
             }
         }
     }

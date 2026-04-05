@@ -91,12 +91,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardGoal19" />
+        app:layout_constraintTop_toBottomOf="@id/recyclerGoals" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardGoal19"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerGoals"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
@@ -104,70 +104,9 @@
         app:cardElevation="6dp"
         app:layout_constraintTop_toBottomOf="@id/textView27"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/txtGoalName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Goal Name"
-            android:textStyle="bold"
-            android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/txtGoalTarget"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Target: R10,000"
-        android:textSize="12sp"
-        android:layout_marginTop="4dp"/>
-
-    <ProgressBar
-        android:id="@+id/progressGoal"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:layout_marginTop="12dp"
-        android:progress="40" />
-
-
-    <TextView
-        android:id="@+id/txtProgress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="R4,000 saved"
-        android:textSize="12sp"
-        android:layout_marginTop="4dp"/>
-
-        <EditText
-            android:id="@+id/inputAddAmount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Add amount"
-            android:inputType="number"
-            android:textSize="12sp"
-            android:layout_marginTop="12dp"/>
-
-        <Button
-            android:id="@+id/buttonAddMoney"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Money"
-            android:textSize="10sp"
-            android:layout_marginTop="8dp"/>
-
-
-
-
-    </LinearLayout>
-    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/button18"

@@ -12,6 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Coin_Budgetra">
         <activity
+            android:name=".GoalAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".Goals"
+            android:exported="false" />
+        <activity
+            android:name=".Goal"
+            android:exported="false" />
+        <activity
+            android:name=".Challenges_dash"
+            android:exported="false" />
+        <activity
             android:name=".Add_goal"
             android:exported="false" />
         <activity

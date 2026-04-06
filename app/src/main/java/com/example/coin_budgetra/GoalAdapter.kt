@@ -19,11 +19,9 @@ class GoalAdapter(
     private val onEditClicked: (goal: Goal, position: Int) -> Unit
 ) : RecyclerView.Adapter<GoalAdapter.GoalViewHolder>() {
 
-    // "All", "Active", "Completed" — controlled from the screen
-    var currentFilter: String = "All"
+     var currentFilter: String = "All"
 
-    // The list the RecyclerView actually sees (filtered view of `goals`)
-    private var filteredGoals: MutableList<Goal> = goals.toMutableList()
+   private var filteredGoals: MutableList<Goal> = goals.toMutableList()
 
     fun applyFilter(filter: String) {
         currentFilter = filter

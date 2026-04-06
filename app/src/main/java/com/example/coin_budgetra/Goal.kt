@@ -7,4 +7,7 @@ data class Goal(
         var targetAmount: Int,
         var savedAmount: Int = 0
 
-)
+){
+// Derived — no extra field needed, always accurate
+val isCompleted: Boolean get() = targetAmount > 0 && savedAmount >= targetAmount
+}

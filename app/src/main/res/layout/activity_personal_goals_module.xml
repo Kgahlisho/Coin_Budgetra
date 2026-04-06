@@ -68,71 +68,70 @@
         android:id="@+id/filterRow"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView27"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/textView27">
 
         <Button
             android:id="@+id/btnFilterAll"
-            android:layout_width="0dp"
+            android:layout_width="50dp"
             android:layout_height="36dp"
-            android:layout_weight="1"
             android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+           android:alpha="1.0"
             android:text="All"
-            android:textSize="12sp"
-            android:alpha="1.0" />
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/btnFilterActive"
-            android:layout_width="0dp"
+            android:layout_width="50dp"
             android:layout_height="36dp"
-            android:layout_weight="1"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:alpha="0.5"
             android:text="Active"
-            android:textSize="12sp"
-            android:alpha="0.5" />
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/btnFilterCompleted"
-            android:layout_width="0dp"
+            android:layout_width="50dp"
             android:layout_height="36dp"
-            android:layout_weight="1"
             android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:alpha="0.5"
             android:text="Completed"
-            android:textSize="12sp"
-            android:alpha="0.5" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerGoals"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="380dp"
+        android:layout_height="484dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:scrollbars="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/textView27"
         app:layout_constraintBottom_toTopOf="@+id/buttonAddGoal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/filterRow" />
 
     <Button
         android:id="@+id/buttonAddGoal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="125dp"
+        android:layout_height="48dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="24dp"
         android:text="+ Add New Goal"
-        android:textSize="14sp"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

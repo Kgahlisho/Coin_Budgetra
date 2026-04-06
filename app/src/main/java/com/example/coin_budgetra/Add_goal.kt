@@ -71,8 +71,6 @@ class Add_goal : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-
-
             if (initialAmount > targetAmount) {
                 Toast.makeText(this, "Initial amount cannot exceed the target", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener

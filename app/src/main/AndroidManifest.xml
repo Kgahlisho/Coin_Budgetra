@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Coin_Budgetra">
 
+
         <activity android:name=".Challenges_dash" android:exported="false" />
+        <activity android:name=".Add_challenge" android:exported="false" />
         <activity android:name=".Add_goal" android:exported="false" />
         <activity android:name=".personal_goals_Module" android:exported="false" />
         <activity android:name=".Create_Expense" android:exported="false" />
@@ -27,10 +29,10 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

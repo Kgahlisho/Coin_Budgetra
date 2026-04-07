@@ -13,6 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="21dp"
         android:text="Budgeting Made simple."
+        android:textStyle="bold"
+        android:textColor="#056608"
         app:layout_constraintEnd_toEndOf="@+id/textView5"
         app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="@+id/textView5"

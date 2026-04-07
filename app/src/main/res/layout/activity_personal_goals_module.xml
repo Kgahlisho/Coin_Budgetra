@@ -120,8 +120,10 @@
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/buttonAddGoal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filterRow" />
+        app:layout_constraintTop_toBottomOf="@+id/filterRow"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/buttonAddGoal"

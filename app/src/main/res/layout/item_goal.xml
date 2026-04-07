@@ -105,6 +105,7 @@
             android:layout_height="wrap_content"
             android:text="Saved: R0"
             android:layout_marginTop="5dp"
+            android:textColor="#06402B"
             android:textSize="12sp" />
 
     </LinearLayout>

@@ -12,7 +12,7 @@
     <Button
         android:id="@+id/button16"
         android:layout_width="80dp"
-        android:layout_height="35dp"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:text="Back"
@@ -80,7 +80,7 @@
         <Button
             android:id="@+id/btnFilterAll"
             android:layout_width="50dp"
-            android:layout_height="36dp"
+            android:layout_height="48dp"
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
            android:alpha="1.0"
@@ -90,7 +90,7 @@
         <Button
             android:id="@+id/btnFilterActive"
             android:layout_width="50dp"
-            android:layout_height="36dp"
+            android:layout_height="48dp"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
@@ -101,7 +101,7 @@
         <Button
             android:id="@+id/btnFilterCompleted"
             android:layout_width="50dp"
-            android:layout_height="36dp"
+            android:layout_height="48dp"
             android:layout_marginStart="4dp"
             android:layout_weight="1"
             android:alpha="0.5"

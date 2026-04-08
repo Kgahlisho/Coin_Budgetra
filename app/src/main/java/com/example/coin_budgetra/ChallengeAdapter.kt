@@ -153,7 +153,7 @@ class ChallengeAdapter(
         }
 
         holder.btnDelete.setOnClickListener {
-            val pos = holder.bindingAdapterPosition
+            val pos = holder.adapterPosition
             if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
             AlertDialog.Builder(holder.itemView.context)
                 .setTitle("Delete challenge?")

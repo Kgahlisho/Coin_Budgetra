@@ -199,7 +199,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="24dp"
-            android:text="Budget Range (R)"
+            android:text="Challenge Budget (R)"
             android:textSize="13sp"
             android:textStyle="bold"
             android:textColor="?android:attr/textColorPrimary"
@@ -230,18 +230,27 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Minimum (R)"
+                    android:layout_marginBottom="4dp"
+                    android:text="Budget Maximum (R)"
                     android:textSize="11sp"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:layout_marginBottom="4dp" />
+                    android:textColor="?android:attr/textColorSecondary" />
 
-                <EditText
-                    android:id="@+id/editChallengeMinAmount"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="0"
+                    android:layout_marginBottom="2dp"
+                    android:text="Max you are allowed to spend"
+                    android:textSize="10sp"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <EditText
+                    android:id="@+id/editChallengeBudgetMax"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="e.g. 1000"
                     android:inputType="number"
                     android:textSize="13sp" />
+
 
             </LinearLayout>
 
@@ -249,24 +258,34 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="8dp">
+                android:layout_marginStart="8dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Maximum (R)"
+                    android:layout_marginBottom="4dp"
+                    android:text="Amount Adding (R)"
                     android:textSize="11sp"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:layout_marginBottom="4dp" />
+                    android:textColor="?android:attr/textColorSecondary" />
 
-                <EditText
-                    android:id="@+id/editChallengeMaxAmount"
+
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="0"
+                    android:layout_marginBottom="2dp"
+                    android:text="How much you are putting in"
+                    android:textSize="10sp"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <EditText
+                    android:id="@+id/editChallengeAmountSaved"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="e.g. 250"
                     android:inputType="number"
                     android:textSize="13sp" />
+
 
             </LinearLayout>
 
@@ -276,13 +295,14 @@
         <Button
             android:id="@+id/btnSaveChallenge"
             android:layout_width="160dp"
-            android:layout_height="48dp"
+            android:layout_height="35dp"
             android:layout_marginTop="36dp"
             android:text="Save Challenge"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutAmounts" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

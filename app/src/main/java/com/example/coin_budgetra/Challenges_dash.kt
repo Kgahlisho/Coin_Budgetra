@@ -13,13 +13,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class Challenges_dash : AppCompatActivity() {
 
+class Challenges_dash : AppCompatActivity() {
 
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ChallengeAdapter
-    private val ChallengeList = mutableListOf<Challenge>()
+    private val challengeList = mutableListOf<Challenge>()
 
     private val addChallengeLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -29,40 +29,41 @@ class Challenges_dash : AppCompatActivity() {
 
 
 
-        val name      = data.getStringExtra("challengeName")      ?: "Unnamed Expense"
-        val desc      = data.getStringExtra("challengeDesc")      ?: ""
-        val category  = data.getStringExtra("challengeCategory")  ?: ""
-        val startDate = data.getStringExtra("challengeStartDate") ?: ""
-        val endDate   = data.getStringExtra("challengeEndDate")   ?: ""
-        val minAmount = data.getIntExtra("challengeMinAmount", 0)
-        val maxAmount = data.getIntExtra("challengeMaxAmount", 0)
-        val isEdit    = data.getBooleanExtra("isEdit", false)
-        val position  = data.getIntExtra("position", -1)
+        val name        = data.getStringExtra("challengeName")      ?: "Unnamed Challenge"
+        val desc        = data.getStringExtra("challengeDesc")      ?: ""
+        val category    = data.getStringExtra("challengeCategory")  ?: ""
+        val startDate   = data.getStringExtra("challengeStartDate") ?: ""
+        val endDate     = data.getStringExtra("challengeEndDate")   ?: ""
+        val budgetMax   = data.getIntExtra("challengeBudgetMax", 0)
+        val amountSaved = data.getIntExtra("challengeAmtSaved",  0)
+        val isEdit      = data.getBooleanExtra("isEdit", false)
+        val position    = data.getIntExtra("position", -1)
 
-        if (isEdit && position >= 0 && position < ChallengeList.size) {
-            ChallengeList[position].apply {
+        if (isEdit && position >= 0 && position < challengeList.size) {
+            challengeList[position].apply {
                 this.name        = name
                 this.description = desc
                 this.category    = category
                 this.startDate   = startDate
                 this.endDate     = endDate
-                this.minAmount   = minAmount
-                this.maxAmount   = maxAmount
+                this.budgetMax   = budgetMax
+                this.amountSaved = amountSaved
             }
+
             adapter.refreshList()
         } else {
-            ChallengeList.add(
+            challengeList.add(
                 Challenge(
                     name        = name,
                     description = desc,
                     category    = category.ifEmpty { "General" },
                     startDate   = startDate,
                     endDate     = endDate,
-                    minAmount   = minAmount,
-                    maxAmount   = maxAmount
+                    budgetMax   = budgetMax,
+                    amountSaved = amountSaved
                 )
             )
-            adapter.notifyItemInserted(ChallengeList.size - 1)
+            adapter.notifyItemInserted(challengeList.size - 1)
         }
     }
 
@@ -80,7 +81,7 @@ class Challenges_dash : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recyclerChallenge)
 
-        adapter = ChallengeAdapter(ChallengeList) { challenge, position ->
+        adapter = ChallengeAdapter(challengeList) { challenge, position ->
             val intent = Intent(this, Add_challenge::class.java).apply {
                 putExtra("isEdit",      true)
                 putExtra("position",    position)
@@ -89,19 +90,17 @@ class Challenges_dash : AppCompatActivity() {
                 putExtra("category",    challenge.category)
                 putExtra("startDate",   challenge.startDate)
                 putExtra("endDate",     challenge.endDate)
-                putExtra("minAmount",   challenge.minAmount)
-                putExtra("maxAmount",   challenge.maxAmount)
+                putExtra("budgetMax",   challenge.budgetMax)
+                putExtra("amountSaved", challenge.amountSaved)
             }
             addChallengeLauncher.launch(intent)
         }
 
+
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        findViewById<Button>(R.id.btnBackFromChallengeDash).setOnClickListener {
-            finish()
-        }
-
+        findViewById<Button>(R.id.btnBackFromChallengeDash).setOnClickListener { finish() }
         findViewById<Button>(R.id.btnCreateChallengeGoal).setOnClickListener {
             addChallengeLauncher.launch(Intent(this, Add_challenge::class.java))
         }
@@ -109,6 +108,7 @@ class Challenges_dash : AppCompatActivity() {
 }
 
 
-        //from the dashboard --> challenges dash --> create a new challenge
+
+//from the dashboard --> challenges dash --> create a new challenge
         //challenges dash is going to have all the challenges created by the user meaning the active challenges
         // also the dash will be consisted with the same flow as the personal goals where user can manipulate ,delete,edit and create a challenege

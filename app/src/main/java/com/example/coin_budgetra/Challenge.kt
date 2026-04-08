@@ -6,6 +6,6 @@ data class Challenge(
     var category: String,
     var startDate: String,
     var endDate: String,
-    var minAmount: Int,
-    var maxAmount: Int
+    var budgetMax: Int,
+    var amountSaved: Int
 )

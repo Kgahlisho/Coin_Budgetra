@@ -16,7 +16,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-
 class Add_challenge : AppCompatActivity() {
 
     private var selectedStartDate: Calendar = Calendar.getInstance()
@@ -42,10 +41,10 @@ class Add_challenge : AppCompatActivity() {
             findViewById<EditText>(R.id.editChallengeDescription)
         val inputCategory =
             findViewById<EditText>(R.id.editChallengeCategory)
-        val inputMin      =
-            findViewById<EditText>(R.id.editChallengeMinAmount)
-        val inputMax      =
-            findViewById<EditText>(R.id.editChallengeMaxAmount)
+        val inputBudgetMax      =
+            findViewById<EditText>(R.id.editChallengeBudgetMax)
+        val inputAmtSaved      =
+            findViewById<EditText>(R.id.editChallengeAmountSaved)
         val btnStartDate  =
             findViewById<Button>(R.id.btnPickStartDate)
         val btnEndDate    =
@@ -70,8 +69,8 @@ class Add_challenge : AppCompatActivity() {
             inputName.setText(intent.getStringExtra("name"))
             inputDesc.setText(intent.getStringExtra("description"))
             inputCategory.setText(intent.getStringExtra("category"))
-            inputMin.setText(intent.getIntExtra("minAmount", 0).toString())
-            inputMax.setText(intent.getIntExtra("maxAmount", 0).toString())
+            inputBudgetMax.setText(intent.getIntExtra("budgetMax", 0).toString())
+            inputAmtSaved.setText(intent.getIntExtra("amountSaved", 0).toString())
 
             val startStr = intent.getStringExtra("startDate") ?: dateFormat.format(selectedStartDate.time)
             val endStr   = intent.getStringExtra("endDate")   ?: dateFormat.format(selectedEndDate.time)
@@ -116,33 +115,41 @@ class Add_challenge : AppCompatActivity() {
             val name     = inputName.text.toString().trim()
             val desc     = inputDesc.text.toString().trim()
             val category = inputCategory.text.toString().trim()
-            val minStr   = inputMin.text.toString().trim()
-            val maxStr   = inputMax.text.toString().trim()
+            val maxStr   = inputBudgetMax.text.toString().trim()
+            val savedStr = inputAmtSaved.text.toString().trim()
 
             if (name.isEmpty()) {
                 Toast.makeText(this, "The name of the Challenge is required", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if (minStr.isEmpty() || maxStr.isEmpty()) {
-                Toast.makeText(this, "Both minimum and maximum amounts are required", Toast.LENGTH_SHORT).show()
+            if (maxStr.isEmpty()) {
+                Toast.makeText(this, "Budget maximum amount is required", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (savedStr.isEmpty()) {
+                Toast.makeText(this, "Amount to add towards the challenge is required", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val minAmount = try { minStr.toInt() } catch (e: NumberFormatException) {
-                Toast.makeText(this, "Minimum amount must be a number", Toast.LENGTH_SHORT).show()
+            val budgetMax = try { maxStr.toInt() } catch (e: NumberFormatException) {
+                Toast.makeText(this, "Budget maximum must be a valid number", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val maxAmount = try { maxStr.toInt() } catch (e: NumberFormatException) {
-                Toast.makeText(this, "Maximum amount must be a number", Toast.LENGTH_SHORT).show()
+            val amountSaved = try { savedStr.toInt() } catch (e: NumberFormatException) {
+                Toast.makeText(this, "Amount added must be a valid number", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if (minAmount < 0 || maxAmount < 0) {
-                Toast.makeText(this, "Amounts cannot be negative", Toast.LENGTH_SHORT).show()
+            if (budgetMax <= 0) {
+                Toast.makeText(this, "Budget maximum must be greater than zero", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if (minAmount > maxAmount) {
-                Toast.makeText(this, "Minimum amount cannot exceed the maximum amount", Toast.LENGTH_SHORT).show()
+            if (amountSaved < 0) {
+                Toast.makeText(this, "Amount added cannot be negative", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (amountSaved > budgetMax) {
+                Toast.makeText(this, "Amount added cannot exceed the budget maximum", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             if (selectedEndDate.before(selectedStartDate)) {
@@ -156,8 +163,8 @@ class Add_challenge : AppCompatActivity() {
                 putExtra("challengeCategory",  category)
                 putExtra("challengeStartDate", btnStartDate.text.toString())
                 putExtra("challengeEndDate",   btnEndDate.text.toString())
-                putExtra("challengeMinAmount", minAmount)
-                putExtra("challengeMaxAmount", maxAmount)
+                putExtra("challengeBudgetMax", budgetMax)
+                putExtra("challengeAmtSaved", amountSaved)
                 putExtra("isEdit",           isEdit)
                 if (isEdit) putExtra("position", position)
             }

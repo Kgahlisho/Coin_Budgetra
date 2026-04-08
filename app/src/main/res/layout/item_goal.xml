@@ -50,7 +50,7 @@
             <Button
                 android:id="@+id/btnEdit"
                 android:layout_width="78dp"
-                android:layout_height="38dp"
+                android:layout_height="35dp"
                 android:layout_marginLeft="4dp"
                 android:text="Edit"
                 android:textSize="10sp" />
@@ -59,7 +59,7 @@
             <Button
                 android:id="@+id/btnDelete"
                 android:layout_width="78dp"
-                android:layout_height="38dp"
+                android:layout_height="35dp"
                 android:layout_marginStart="4dp"
                 android:text="Delete"
                 android:textSize="10sp" />
@@ -140,7 +140,7 @@
             <Button
                 android:id="@+id/btnAddMoney"
                 android:layout_width="78dp"
-                android:layout_height="38dp"
+                android:layout_height="35dp"
                 android:layout_marginStart="8dp"
                 android:text="Add"
                 android:textSize="10sp" />

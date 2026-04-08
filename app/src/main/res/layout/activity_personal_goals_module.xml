@@ -8,11 +8,10 @@
     tools:context=".personal_goals_Module">
 
 
-
     <Button
         android:id="@+id/button16"
         android:layout_width="80dp"
-        android:layout_height="48dp"
+        android:layout_height="35dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:text="Back"
@@ -80,17 +79,17 @@
         <Button
             android:id="@+id/btnFilterAll"
             android:layout_width="50dp"
-            android:layout_height="48dp"
+            android:layout_height="35dp"
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
-           android:alpha="1.0"
+            android:alpha="1.0"
             android:text="All"
             android:textSize="12sp" />
 
         <Button
             android:id="@+id/btnFilterActive"
             android:layout_width="50dp"
-            android:layout_height="48dp"
+            android:layout_height="35dp"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
@@ -101,7 +100,7 @@
         <Button
             android:id="@+id/btnFilterCompleted"
             android:layout_width="50dp"
-            android:layout_height="48dp"
+            android:layout_height="35dp"
             android:layout_marginStart="4dp"
             android:layout_weight="1"
             android:alpha="0.5"
@@ -128,7 +127,7 @@
     <Button
         android:id="@+id/buttonAddGoal"
         android:layout_width="125dp"
-        android:layout_height="48dp"
+        android:layout_height="35dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="24dp"

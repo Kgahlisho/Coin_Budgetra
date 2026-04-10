@@ -7,8 +7,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+
 
 class Expense_Module : AppCompatActivity() {
+
+    private lateinit var adapter: ExpenseAdapter
+    private lateinit var recyclerExpenses: RecyclerView
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -19,19 +27,31 @@ class Expense_Module : AppCompatActivity() {
             insets
         }
 
-        val btnCreateExpense = this.findViewById<Button>(R.id.button9)
+        recyclerExpenses = findViewById(R.id.recyclerExpenses)
 
-        btnCreateExpense.setOnClickListener {
+        adapter = ExpenseAdapter(ExpenseRepository.expenses) { _, position ->
             val intent = Intent(this, Create_Expense::class.java)
-            startActivity(intent);
+            intent.putExtra("position", position)
+            startActivity(intent)
         }
 
-        val btnBack = this.findViewById<Button>(R.id.button15)
+        recyclerExpenses.layoutManager = LinearLayoutManager(this)
+        recyclerExpenses.adapter = adapter
+
+
+        val btnCreateExpense = findViewById<Button>(R.id.button9)
+        btnCreateExpense.setOnClickListener {
+            startActivity(Intent(this, Create_Expense::class.java))
+        }
+
+        val btnBack = findViewById<Button>(R.id.button15)
         btnBack.setOnClickListener {
-            val intent = Intent(this, Dashboard_Module::class.java)
-            startActivity(intent);
+            startActivity(Intent(this, Dashboard_Module::class.java))
         }
+    }
 
-
+    override fun onResume() {
+        super.onResume()
+        adapter.refreshList()
     }
 }

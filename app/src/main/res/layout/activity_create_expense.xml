@@ -1,206 +1,285 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Create_Expense">
+    android:fillViewport="true"
+    android:background="#F4F6FA">
 
-    <EditText
-        android:id="@+id/editTextText13"
-        android:layout_width="130dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="56dp"
-        android:ems="10"
-        android:hint="R : "
-        android:inputType="text"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextText12"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editTextText12"
-        app:layout_constraintTop_toTopOf="@+id/editTextText12"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="119dp"
-        android:layout_marginTop="82dp"
-        android:layout_marginEnd="119dp"
-        android:text="Lets create a new expense."
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+        android:paddingBottom="40dp">
+   <Button
+            android:id="@+id/btnCancelExpense"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:text="Cancel"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="45dp"
-        android:layout_marginTop="43dp"
-        android:layout_marginEnd="3dp"
-        android:text="Enter Expense :"
-        android:textSize="11sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/editTextText9"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:text="Coin Budgetra"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/imgExpenseLogo"
+            app:layout_constraintStart_toEndOf="@+id/btnCancelExpense"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editTextText9"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="36dp"
-        android:ems="10"
-        android:hint="Expense name"
-        android:inputType="text"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView18"
-        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgExpenseLogo"
+            android:layout_width="45dp"
+            android:layout_height="39dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/CircleImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/coinbudgetra" />
 
-    <EditText
-        android:id="@+id/editTextText10"
-        android:layout_width="340dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="35dp"
-        android:ems="10"
-        android:hint="Description"
-        android:inputType="text"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText9" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardExpenseForm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnCancelExpense">
 
-    <EditText
-        android:id="@+id/editTextText11"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="36dp"
-        android:ems="10"
-        android:hint="Category"
-        android:inputType="text"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText10" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="33dp"
-        android:layout_marginEnd="3dp"
-        android:text="Category :"
-        android:textSize="11sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/editTextText11"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText10" />
+                  <TextView
+                    android:id="@+id/txtExpenseFormTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Create Expense"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A1A2E"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center" />
 
-    <EditText
-        android:id="@+id/editTextDate"
-        android:layout_width="130dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="40dp"
-        android:ems="10"
-        android:hint="DD/MM/YYYY"
-        android:inputType="date"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toStartOf="@+id/editTextDate2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText11" />
+                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Expense Name *"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="#555555"
+                    android:layout_marginBottom="4dp" />
 
-    <EditText
-        android:id="@+id/editTextDate2"
-        android:layout_width="130dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="56dp"
-        android:ems="10"
-        android:hint="DD/MM/YYYY"
-        android:inputType="date"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextDate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editTextDate"
-        app:layout_constraintTop_toTopOf="@+id/editTextDate"
-        app:layout_constraintVertical_bias="0.0" />
+                <EditText
+                    android:id="@+id/editExpenseName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="e.g. Bali Trip"
+                    android:inputType="text"
+                    android:textSize="13sp"
+                    android:padding="10dp"
+                    android:layout_marginBottom="14dp" />
 
-    <EditText
-        android:id="@+id/editTextText12"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="26dp"
-        android:ems="10"
-        android:hint="R :"
-        android:inputType="number"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toStartOf="@+id/editTextText13"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
+                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="#555555"
+                    android:layout_marginBottom="4dp" />
 
-    <TextView
-        android:id="@+id/textView20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="160dp"
-        android:text="Coin Budgetra"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+                <EditText
+                    android:id="@+id/editExpenseDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Optional description"
+                    android:inputType="textMultiLine"
+                    android:minLines="2"
+                    android:gravity="top"
+                    android:textSize="13sp"
+                    android:padding="10dp"
+                    android:layout_marginBottom="14dp" />
 
-    <Button
-        android:id="@+id/button11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
-        android:layout_marginTop="126dp"
-        android:layout_marginEnd="50dp"
-        android:text="Cancel"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toStartOf="@+id/button12"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText12" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Category"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="#555555"
+                    android:layout_marginBottom="4dp" />
 
-    <Button
-        android:id="@+id/button12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="126dp"
-        android:layout_marginEnd="99dp"
-        android:text="Done"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button11"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText13" />
+                <Spinner
+                    android:id="@+id/spinnerExpenseCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                   android:padding="4dp"
+                    android:layout_marginBottom="14dp" />
+
+                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date Range"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="#555555"
+                    android:layout_marginBottom="6dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="14dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginEnd="6dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Start Date"
+                            android:textSize="11sp"
+                            android:textColor="#777777"
+                            android:layout_marginBottom="4dp" />
+
+                        <Button
+                            android:id="@+id/btnExpenseStartDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:text="DD/MM/YYYY"
+                            android:textSize="11sp"
+                            android:backgroundTint="#E8EAF6" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="6dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="End Date"
+                            android:textSize="11sp"
+                            android:textColor="#777777"
+                            android:layout_marginBottom="4dp" />
+
+                        <Button
+                            android:id="@+id/btnExpenseEndDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:text="DD/MM/YYYY"
+                            android:textSize="11sp"
+                            android:backgroundTint="#E8EAF6" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Spending Limit (R) *"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="#555555"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/editExpenseSpendingLimit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="e.g. 5000"
+                    android:inputType="number"
+                    android:textSize="13sp"
+                   android:padding="10dp"
+                    android:layout_marginBottom="14dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add Money (R)"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="#555555"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/editExpenseAddMoney"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Optional initial amount"
+                    android:inputType="number"
+                    android:textSize="13sp"
+                     android:padding="10dp"
+                    android:layout_marginBottom="14dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Receipts / Documents"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="#555555"
+                    android:layout_marginBottom="4dp" />
+
+                <Button
+                    android:id="@+id/btnAttachDocument"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:text="📎  Upload Photo / Receipt"
+                    android:textSize="12sp"
+                    android:backgroundTint="#E3F2FD"
+                    android:textColor="#1565C0"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:id="@+id/txtDocumentCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No documents attached"
+                    android:textSize="11sp"
+                    android:textColor="#888888"
+                    android:gravity="center"
+                    android:layout_marginBottom="16dp" />
+
+                <Button
+                    android:id="@+id/btnSaveExpense"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="Save Expense"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="#1A237E"
+                    android:textColor="#FFFFFF" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageView4"
-        android:layout_width="45dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:scaleType="centerCrop"
-        app:shapeAppearanceOverlay="@style/CircleImage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView20"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/coinbudgetra" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

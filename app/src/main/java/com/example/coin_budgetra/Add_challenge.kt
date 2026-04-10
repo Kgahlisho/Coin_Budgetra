@@ -123,16 +123,16 @@ class Add_challenge : AppCompatActivity() {
                 return@setOnClickListener
             }
             if (maxStr.isEmpty()) {
-                Toast.makeText(this, "Budget maximum amount is required", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "The Maximum Budget amount is required", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             if (savedStr.isEmpty()) {
-                Toast.makeText(this, "Amount to add towards the challenge is required", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Your own Added Amount is required", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             val budgetMax = try { maxStr.toInt() } catch (e: NumberFormatException) {
-                Toast.makeText(this, "Budget maximum must be a valid number", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Maximum Budget must be a valid number", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val amountSaved = try { savedStr.toInt() } catch (e: NumberFormatException) {
@@ -141,11 +141,11 @@ class Add_challenge : AppCompatActivity() {
             }
 
             if (budgetMax <= 0) {
-                Toast.makeText(this, "Budget maximum must be greater than zero", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "The Maximum Budget must be greater than zero", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             if (amountSaved < 0) {
-                Toast.makeText(this, "Amount added cannot be negative", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Your added Amount cannot be smaller than 0. ", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             if (amountSaved > budgetMax) {

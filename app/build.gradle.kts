@@ -5,13 +5,13 @@ plugins {
 
 android {
     namespace = "com.example.coin_budgetra"
-    compileSdk = 36
+    compileSdk = 35
 
 
     defaultConfig {
         applicationId = "com.example.coin_budgetra"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -35,8 +35,10 @@ android {
         jvmTarget = "11"
     }
 }
-
 dependencies {
+    // this Kotlin BOM — will prevent the duplicate kotlin-stdlib classes (fixes checkDebugDuplicateClasses)
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:2.0.21"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -45,4 +47,5 @@ dependencies {
     implementation(libs.androidx.cardview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)}
+    androidTestImplementation(libs.androidx.espresso.core)
+}

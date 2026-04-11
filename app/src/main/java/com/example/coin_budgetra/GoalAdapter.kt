@@ -11,7 +11,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
 class GoalAdapter(
@@ -19,9 +18,8 @@ class GoalAdapter(
     private val onEditClicked: (goal: Goal, position: Int) -> Unit
 ) : RecyclerView.Adapter<GoalAdapter.GoalViewHolder>() {
 
-     var currentFilter: String = "All"
-
-   private var filteredGoals: MutableList<Goal> = goals.toMutableList()
+    var currentFilter: String = "All"
+    private var filteredGoals: MutableList<Goal> = goals.toMutableList()
 
     fun applyFilter(filter: String) {
         currentFilter = filter
@@ -56,6 +54,7 @@ class GoalAdapter(
 
 
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GoalViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_goal, parent, false)
@@ -69,14 +68,13 @@ class GoalAdapter(
         val goal = filteredGoals[position]
         val completed = goal.isCompleted
 
-
         holder.txtName.text        = goal.name
         holder.txtDescription.text = goal.description.ifEmpty { "No description" }
         holder.txtCategory.text    = "Category: " + goal.category.ifEmpty { "General" }
         holder.txtTarget.text      = "Target: R${goal.targetAmount}"
         holder.txtSaved.text       = "Saved: R${goal.savedAmount}"
 
-
+        //comment here
         val progress = if (goal.targetAmount > 0) (goal.savedAmount * 100) / goal.targetAmount else 0
         holder.progressBar.progress = progress
 
@@ -90,15 +88,11 @@ class GoalAdapter(
                 android.content.res.ColorStateList.valueOf(Color.parseColor("#1565C0"))
         }
 
+
+//comment here
         holder.itemView.setBackgroundColor(
             if (completed) Color.parseColor("#F1F8E9") else Color.TRANSPARENT
         )
-
-       /* if (completed) {
-            holder.card.setCardBackgroundColor(Color.parseColor("#F1F8E9")) // light green
-        } else {
-            holder.card.setCardBackgroundColor(Color.WHITE)
-        }*/
 
         if (completed) {
             holder.layoutAddMoney.visibility = View.GONE
@@ -108,6 +102,8 @@ class GoalAdapter(
             holder.txtCompleted.visibility   = View.GONE
         }
 
+
+        //comment here
         holder.btnAdd.setOnClickListener {
             val input = holder.inputAdd.text.toString()
             if (input.isEmpty()) {
@@ -121,36 +117,17 @@ class GoalAdapter(
             goal.savedAmount += amountToAdd
             if (goal.savedAmount > goal.targetAmount) goal.savedAmount = goal.targetAmount
             holder.inputAdd.text.clear()
-
             notifyItemChanged(holder.adapterPosition)
         }
-
-
-
-        holder.btnDelete.setOnClickListener {
-            val pos = holder.adapterPosition
-            if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
-            AlertDialog.Builder(holder.itemView.context)
-                .setTitle("Delete Goal")
-                .setMessage("Are you sure you want to delete \"${goal.name}\"?")
-                .setPositiveButton("Delete") { dialog, _ ->
-                    val realIndex = goals.indexOf(filteredGoals[pos])
-                    if (realIndex >= 0) goals.removeAt(realIndex)
-                    refreshList()
-                    dialog.dismiss()
-                }
-                .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
-                .show()
-        }
-
 
         holder.btnEdit.setOnClickListener {
             val pos = holder.adapterPosition
             if (pos != RecyclerView.NO_POSITION) {
-                  val realIndex = goals.indexOf(filteredGoals[pos])
+                val realIndex = goals.indexOf(filteredGoals[pos])
                 onEditClicked(goal, realIndex)
             }
         }
+
 
 
 

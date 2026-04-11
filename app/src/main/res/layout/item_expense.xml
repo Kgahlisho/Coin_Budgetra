@@ -18,66 +18,61 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp">
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
-
-
-
-        <TextView
-            android:id="@+id/txtExpenseName"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="—"
-            android:textSize="10sp"
-            android:textColor="#1A1A2E"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
 
+            <TextView
+                android:id="@+id/txtExpenseName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="—"
+                android:textSize="10sp"
+                android:textColor="#1A1A2E"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/txtExpenseCategory"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="—"
-            android:textSize="1sp"
-            android:textColor="#444444" />
+            <TextView
+                android:id="@+id/txtExpenseCategory"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="—"
+                android:textSize="10sp"
+                android:textColor="#444444" />
 
+            <TextView
+                android:id="@+id/txtExpenseBudget"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="R0"
+                android:textSize="10sp"
+                android:textColor="#2E7D32"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/txtExpenseBudget"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="R0"
-            android:textSize="10sp"
-            android:textColor="#2E7D32"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtExpenseProgress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="R0 / R0"
+                android:textSize="10sp"
+                android:textColor="#1565C0" />
 
-        <TextView
-            android:id="@+id/txtExpenseProgress"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="R0 / R0"
-            android:textSize="10sp"
-            android:textColor="#1565C0" />
+            <TextView
+                android:id="@+id/txtExpenseDocuments"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="None"
+                android:textSize="10sp"
+                android:textColor="#555555" />
 
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/txtExpenseDocuments"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="None"
-            android:textSize="10sp"
-            android:textColor="#555555" />
-
-    </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,7 +81,7 @@
 
             <Button
                 android:id="@+id/btnExpenseAdd"
-                android:layout_width="10dp"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="32dp"
                 android:layout_marginEnd="4dp"
@@ -97,7 +92,7 @@
 
             <Button
                 android:id="@+id/btnExpenseEdit"
-                android:layout_width="10dp"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="32dp"
                 android:layout_marginEnd="4dp"
@@ -108,7 +103,7 @@
 
             <Button
                 android:id="@+id/btnExpenseDelete"
-                android:layout_width="10dp"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="32dp"
                 android:text="Delete"

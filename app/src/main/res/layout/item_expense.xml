@@ -51,6 +51,15 @@
             android:textColor="#2E7D32"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/txtExpenseProgress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="R0 / R0"
+            android:textSize="10sp"
+            android:textColor="#1565C0" />
+
         <!-- Documents -->
         <TextView
             android:id="@+id/txtExpenseDocuments"
@@ -65,8 +74,20 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:orientation="horizontal">
+            android:layout_weight="3"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <Button
+                android:id="@+id/btnExpenseAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Add"
+                android:textSize="9sp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:layout_marginEnd="3dp"
+                android:backgroundTint="#2E7D32"
+                android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/btnExpenseEdit"
@@ -74,9 +95,9 @@
                 android:layout_height="30dp"
                 android:text="Edit"
                 android:textSize="9sp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:layout_marginEnd="4dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:layout_marginEnd="3dp"
                 android:backgroundTint="#1A237E"
                 android:textColor="#FFFFFF" />
 
@@ -86,11 +107,10 @@
                 android:layout_height="30dp"
                 android:text="Delete"
                 android:textSize="9sp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
                 android:backgroundTint="#B71C1C"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>

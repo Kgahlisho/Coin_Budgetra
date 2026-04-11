@@ -70,7 +70,6 @@
                 android:text="Budgetra Challenges"
                 android:textSize="10sp" />
 
-
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
@@ -126,8 +125,8 @@
             android:layout_marginLeft="25dp"
             android:layout_marginTop="25sp"
             android:text="Welcome back , John Doe."
-
             android:textSize="10sp" />
+
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.imageview.ShapeableImageView

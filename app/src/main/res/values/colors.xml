@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+    <color name="Wattle">#cbda46</color>
+    <color name="lemongreen">#72ac43</color>
+    <color name="zeste">#d2ff6c</color>
+    <color name="pulpe">#73d63f</color>
+    <color name="Goldenroad">#e8a736</color>
+    <color name="warmyellow">#ffc94b</color>
+    <color name="tiber">#06392f</color>
+    <color name="Butter">#ffefb3</color>
+    <color name="Wallgreen">#013e37</color>
+    <color name="BottleGreen">#093624</color>
+    <color name="CatalinaBlue">#1d2d44</color>
+    <color name="palatineblue">#1944f1</color>
+    <color name="royalblue">#014baa</color>
+    <color name="coolteal">#0096c7</color>
+    <color name="whitesmoke">#f5f3f3</color>
+    <color name="seasand">#fff4e4</color>
     <color name="white">#FFFFFFFF</color>
-
-
+    <color name="palesky">#750608</color>
+    <color name="cherrycola">#7c0116</color>
+    <color name="hibiscous">#e0a4b0</color>
+    <color name="rubyred">#a31621</color>
 </resources>

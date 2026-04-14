@@ -16,7 +16,7 @@
         <Button
             android:id="@+id/btnChallengeBack"
             android:layout_width="75dp"
-            android:layout_height="35dp"
+            android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="Back"
@@ -159,7 +159,7 @@
                 <Button
                     android:id="@+id/btnPickStartDate"
                     android:layout_width="120dp"
-                    android:layout_height="32dp"
+                    android:layout_height="48dp"
                     android:text="DD/MM/YYYY"
                     android:textSize="10sp" />
 
@@ -183,7 +183,7 @@
                 <Button
                     android:id="@+id/btnPickEndDate"
                     android:layout_width="120dp"
-                    android:layout_height="32dp"
+                    android:layout_height="48dp"
                     android:text="DD/MM/YYYY"
                     android:textSize="10sp" />
 
@@ -295,10 +295,12 @@
         <Button
             android:id="@+id/btnSaveChallenge"
             android:layout_width="160dp"
-            android:layout_height="35dp"
+            android:layout_height="48dp"
             android:layout_marginTop="36dp"
             android:text="Save Challenge"
             android:textSize="12sp"
+            android:backgroundTint="@color/lemongreen"
+            android:textColor="@color/whitesmoke"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutAmounts" />

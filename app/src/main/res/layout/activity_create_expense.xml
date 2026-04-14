@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="40dp">
-   <Button
+        <Button
             android:id="@+id/btnCancelExpense"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
@@ -69,7 +69,7 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
-                  <TextView
+                <TextView
                     android:id="@+id/txtExpenseFormTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                     android:layout_marginBottom="16dp"
                     android:gravity="center" />
 
-                 <TextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:text="Expense Name *"
@@ -99,7 +99,7 @@
                     android:padding="10dp"
                     android:layout_marginBottom="14dp" />
 
-                 <TextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Description"
@@ -216,7 +216,7 @@
                     android:hint="e.g. 5000"
                     android:inputType="number"
                     android:textSize="13sp"
-                   android:padding="10dp"
+                    android:padding="10dp"
                     android:layout_marginBottom="14dp" />
 
                 <TextView
@@ -235,7 +235,7 @@
                     android:hint="Optional initial amount"
                     android:inputType="number"
                     android:textSize="13sp"
-                     android:padding="10dp"
+                    android:padding="10dp"
                     android:layout_marginBottom="14dp" />
 
                 <TextView
@@ -269,13 +269,14 @@
 
                 <Button
                     android:id="@+id/btnSaveExpense"
-                    android:layout_width="match_parent"
+                    android:layout_width="150dp"
                     android:layout_height="50dp"
+                    android:layout_marginLeft="100dp"
+                    android:backgroundTint="@color/lemongreen"
                     android:text="Save Expense"
+                    android:textColor="@color/whitesmoke"
                     android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:backgroundTint="#1A237E"
-                    android:textColor="#FFFFFF" />
+                    android:textStyle="bold" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>

@@ -44,7 +44,9 @@
                 android:layout_height="38dp"
                 android:layout_marginBottom="8dp"
                 android:text="Create expense"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                android:backgroundTint="@color/CatalinaBlue"
+                android:textColor="@color/whitesmoke"/>
 
             <Button
                 android:id="@+id/button6"
@@ -52,7 +54,9 @@
                 android:layout_height="37dp"
                 android:layout_marginBottom="8dp"
                 android:text="finance statement"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                android:backgroundTint="@color/CatalinaBlue"
+                android:textColor="@color/whitesmoke"/>
 
             <Button
                 android:id="@+id/button7"
@@ -60,7 +64,9 @@
                 android:layout_height="45dp"
                 android:layout_marginBottom="8dp"
                 android:text="Personal Saving goals"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                android:backgroundTint="@color/CatalinaBlue"
+                android:textColor="@color/whitesmoke"/>
 
             <Button
                 android:id="@+id/button8"
@@ -68,7 +74,9 @@
                 android:layout_height="37dp"
                 android:layout_marginBottom="8dp"
                 android:text="Budgetra Challenges"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                android:backgroundTint="@color/CatalinaBlue"
+                android:textColor="@color/whitesmoke"/>
 
         </LinearLayout>
 

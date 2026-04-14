@@ -1,13 +1,11 @@
 package com.example.coin_budgetra
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -21,6 +19,20 @@ class Add_challenge : AppCompatActivity() {
     private var selectedStartDate: Calendar = Calendar.getInstance()
     private var selectedEndDate: Calendar   = Calendar.getInstance()
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+private val defaultCategories = mutableListOf(
+    "General",
+    "Home",
+    "Personal",
+    "Maintanance",
+    "Food & Grocery",
+    "Entertainment",
+    "Travel",
+    "Education",
+    "Health",
+    "+ Add new"
+)
+    private lateinit var spinnerAdapter : ArrayAdapter<String>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,8 +51,8 @@ class Add_challenge : AppCompatActivity() {
             findViewById<EditText>(R.id.editChallengeName)
         val inputDesc     =
             findViewById<EditText>(R.id.editChallengeDescription)
-        val inputCategory =
-            findViewById<EditText>(R.id.editChallengeCategory)
+        val spinnerCategory =
+            findViewById<Spinner>(R.id.spinnerChallengeCategory)
         val inputBudgetMax      =
             findViewById<EditText>(R.id.editChallengeBudgetMax)
         val inputAmtSaved      =
@@ -59,29 +71,30 @@ class Add_challenge : AppCompatActivity() {
         val position =
             intent.getIntExtra("position", -1)
 
+
+        spinnerAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item,defaultCategories)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerCategory.adapter = spinnerAdapter
+
+        spinnerCategory.onItemSelectedListener=object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>, View: android.view.View?, pos: Int, id: Long){
+                if (defaultCategories[pos] == "+ Add new..")
+                    showAddCategoryDialog(spinnerCategory)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+
+            }
+
+
+
         btnStartDate.text =
             dateFormat.format(selectedStartDate.time)
         btnEndDate.text   =
             dateFormat.format(selectedEndDate.time)
 
-        if (isEdit) {
-            screenTitle.text = "Edit Challenge"
-            inputName.setText(intent.getStringExtra("name"))
-            inputDesc.setText(intent.getStringExtra("description"))
-            inputCategory.setText(intent.getStringExtra("category"))
-            inputBudgetMax.setText(intent.getIntExtra("budgetMax", 0).toString())
-            inputAmtSaved.setText(intent.getIntExtra("amountSaved", 0).toString())
 
-            val startStr = intent.getStringExtra("startDate") ?: dateFormat.format(selectedStartDate.time)
-            val endStr   = intent.getStringExtra("endDate")   ?: dateFormat.format(selectedEndDate.time)
-            btnStartDate.text = startStr
-            btnEndDate.text   = endStr
 
-            try {
-                selectedStartDate.time = dateFormat.parse(startStr) ?: selectedStartDate.time
-                selectedEndDate.time   = dateFormat.parse(endStr)   ?: selectedEndDate.time
-            } catch (_: Exception) { }
-        }
 
         btnStartDate.setOnClickListener {
             DatePickerDialog(
@@ -111,10 +124,31 @@ class Add_challenge : AppCompatActivity() {
 
         btnBack.setOnClickListener { finish() }
 
+        if (isEdit) {
+            screenTitle.text = "Edit Challenge"
+            inputName.setText(intent.getStringExtra("name"))
+            inputDesc.setText(intent.getStringExtra("description"))
+            selectOrAddCategory(spinnerCategory,intent.getStringExtra("category")?: "")
+            inputBudgetMax.setText(intent.getIntExtra("budgetMax", 0).toString())
+            inputAmtSaved.setText(intent.getIntExtra("amountSaved", 0).toString())
+
+            val startStr = intent.getStringExtra("startDate") ?: dateFormat.format(selectedStartDate.time)
+            val endStr   = intent.getStringExtra("endDate")   ?: dateFormat.format(selectedEndDate.time)
+            btnStartDate.text = startStr
+            btnEndDate.text   = endStr
+
+            try {
+                selectedStartDate.time = dateFormat.parse(startStr) ?: selectedStartDate.time
+                selectedEndDate.time   = dateFormat.parse(endStr)   ?: selectedEndDate.time
+            } catch (_: Exception) { }
+        }
+
         btnSave.setOnClickListener {
             val name     = inputName.text.toString().trim()
             val desc     = inputDesc.text.toString().trim()
-            val category = inputCategory.text.toString().trim()
+            val category = spinnerCategory.selectedItem?.toString()
+                ?.takeIf { it != "+ Add new.." }?: "General"
+
             val maxStr   = inputBudgetMax.text.toString().trim()
             val savedStr = inputAmtSaved.text.toString().trim()
 
@@ -170,6 +204,46 @@ class Add_challenge : AppCompatActivity() {
             }
             setResult(Activity.RESULT_OK, result)
             finish()
+        }
+    }
+
+    private fun showAddCategoryDialog(spinner: Spinner) {
+        val input = EditText(this).apply { hint = "Enter new category name"; textSize = 14f; setPadding(48, 32, 48, 32) }
+        AlertDialog.Builder(this)
+
+            .setTitle("New Category")
+            .setView(input)
+            .setPositiveButton("Add") { _, _ ->
+
+                val newCat = input.text.toString().trim()
+                if (newCat.isNotEmpty()) {
+                    val pos = defaultCategories.size - 1   // insert before "➕ Add new…"
+                    defaultCategories.add(pos, newCat)
+                    spinnerAdapter.notifyDataSetChanged()
+                    spinner.setSelection(pos)
+
+                } else {
+                    spinner.setSelection(0)
+                    Toast.makeText(this, "Category name cannot be empty", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Cancel") { _, _ -> spinner.setSelection(0) }
+            .show()
+    }
+
+
+    private fun selectOrAddCategory(spinner: Spinner, category: String) {
+
+        if (category.isEmpty()) return
+
+        val idx = defaultCategories.indexOf(category)
+        if (idx >= 0) { spinner.setSelection(idx) }
+            else {
+
+                val pos = defaultCategories.size - 1
+                defaultCategories.add(pos, category)
+                spinnerAdapter.notifyDataSetChanged()
+                spinner.setSelection(pos)
         }
     }
 }

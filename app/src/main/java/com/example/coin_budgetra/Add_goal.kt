@@ -1,11 +1,15 @@
 package com.example.coin_budgetra
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +18,21 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class Add_goal : AppCompatActivity() {
+
+    private val defaultCategories = mutableListOf(
+        "General",
+        "Home",
+        "Personal",
+        "Maintanance",
+        "Food & Grocery",
+        "Entertainment",
+        "Travel",
+        "Education",
+        "Health",
+        "+ Add new"
+    )
+    private lateinit var spinnerAdapter : ArrayAdapter<String>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,18 +48,34 @@ class Add_goal : AppCompatActivity() {
         val inputName        = findViewById<EditText>(R.id.editTextText17)
         val inputTarget      = findViewById<EditText>(R.id.editTextText18)
         val inputDescription = findViewById<EditText>(R.id.editTextDescription)
-        val inputCategory    = findViewById<EditText>(R.id.editTextCategory)
+        val spinnerCategory    = findViewById<Spinner>(R.id.spinnerGoalCategory)
         val inputInitial     = findViewById<EditText>(R.id.editTextInitialAmount)
         val saveBtn          = findViewById<Button>(R.id.button19)
 
         val isEdit   = intent.getBooleanExtra("isEdit", false)
         val position = intent.getIntExtra("position", -1)
 
+
+        spinnerAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item,defaultCategories)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerCategory.adapter = spinnerAdapter
+
+        spinnerCategory.onItemSelectedListener=object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>, View: android.view.View?, pos: Int, id: Long){
+                if (defaultCategories[pos] == "+ Add new..")
+                    showAddCategoryDialog(spinnerCategory)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+
+
+        }
+
         if (isEdit) {
             screenTitle.text = "Edit Goal"
             inputName.setText(intent.getStringExtra("name"))
             inputDescription.setText(intent.getStringExtra("description"))
-            inputCategory.setText(intent.getStringExtra("category"))
+            selectOrAddCategory(spinnerCategory, intent.getStringExtra("category") ?: "")
             inputTarget.setText(intent.getIntExtra("target", 0).toString())
             // Hide initial deposit field when editing (user uses "Add Money" on the card instead)
             inputInitial.visibility = android.view.View.GONE
@@ -53,7 +88,8 @@ class Add_goal : AppCompatActivity() {
             val name        = inputName.text.toString().trim()
             val targetStr   = inputTarget.text.toString().trim()
             val description = inputDescription.text.toString().trim()
-            val category    = inputCategory.text.toString().trim()
+            val category    = spinnerCategory.selectedItem?.toString()
+                ?.takeIf{it != " + Add new .."} ?: "General"
             val initialStr  = if (isEdit) "0" else inputInitial.text.toString().trim().ifEmpty { "0" }
 
             if (name.isEmpty() || targetStr.isEmpty()) {
@@ -76,7 +112,7 @@ class Add_goal : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val result = Intent().apply {
+            setResult(Activity.RESULT_OK, Intent().apply {
                 putExtra("goalName",         name)
                 putExtra("goalAmount",       targetStr)
                 putExtra("goalDescription",  description)
@@ -84,9 +120,49 @@ class Add_goal : AppCompatActivity() {
                 putExtra("goalInitialSaved", initialAmount)
                 putExtra("isEdit",           isEdit)
                 if (isEdit) putExtra("position", position)
-            }
-            setResult(Activity.RESULT_OK, result)
+            })
+
             finish()
+        }
+    }
+
+    private fun showAddCategoryDialog(spinner: Spinner) {
+        val input = EditText(this).apply { hint = "Enter new category name"; textSize = 14f; setPadding(48, 32, 48, 32) }
+        AlertDialog.Builder(this)
+
+            .setTitle("New Category")
+            .setView(input)
+            .setPositiveButton("Add") { _, _ ->
+
+                val newCat = input.text.toString().trim()
+                if (newCat.isNotEmpty()) {
+                    val pos = defaultCategories.size - 1   // insert before "➕ Add new…"
+                    defaultCategories.add(pos, newCat)
+                    spinnerAdapter.notifyDataSetChanged()
+                    spinner.setSelection(pos)
+
+                } else {
+                    spinner.setSelection(0)
+                    Toast.makeText(this, "Category name cannot be empty", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Cancel") { _, _ -> spinner.setSelection(0) }
+            .show()
+    }
+
+
+    private fun selectOrAddCategory(spinner: Spinner, category: String) {
+
+        if (category.isEmpty()) return
+
+        val idx = defaultCategories.indexOf(category)
+        if (idx >= 0) { spinner.setSelection(idx) }
+        else {
+
+            val pos = defaultCategories.size - 1
+            defaultCategories.add(pos, category)
+            spinnerAdapter.notifyDataSetChanged()
+            spinner.setSelection(pos)
         }
     }
 }

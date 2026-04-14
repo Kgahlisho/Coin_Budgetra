@@ -105,11 +105,26 @@
             app:layout_constraintTop_toBottomOf="@+id/textView32" />
 
         <EditText
+            android:id="@+id/editTextInitialAmount"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:hint="How much do you already have to deposit? (R)"
+            android:inputType="number"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.504"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelInitialAmount" />
+
+        <EditText
             android:id="@+id/editTextText18"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="11dp"
             android:layout_marginEnd="24dp"
             android:hint="Target amount (R)"
             android:inputType="number"
@@ -117,14 +132,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.504"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextCategory" />
+            app:layout_constraintTop_toBottomOf="@+id/spinnerGoalCategory" />
 
         <TextView
             android:id="@+id/labelInitialAmount"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="24dp"
             android:text="Initial deposit (optional)"
             android:textColor="?android:attr/textColorSecondary"
@@ -135,52 +150,63 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextText18" />
 
-        <EditText
-            android:id="@+id/editTextInitialAmount"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="24dp"
-            android:hint="How much do you already have to deposit? (R)"
-            android:inputType="number"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.504"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelInitialAmount" />
-
         <Button
             android:id="@+id/button19"
             android:layout_width="120dp"
             android:layout_height="38dp"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="96dp"
             android:layout_marginEnd="32dp"
-            android:text="Save Goal"
-            android:textSize="13sp"
             android:backgroundTint="@color/lemongreen"
+            android:text="Save Goal"
             android:textColor="@color/whitesmoke"
+            android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextInitialAmount" />
 
-        <EditText
-            android:id="@+id/editTextCategory"
+        <Spinner
+
+            android:id="@+id/spinnerGoalCategory"
+
             android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="24dp"
-            android:hint="Category (e.g. Electronics, Travel)"
-            android:inputType="text"
-            android:textSize="13sp"
+
+            android:layout_height="48dp"
+
+            android:layout_marginStart="80dp"
+
+            android:layout_marginTop="8dp"
+
+            android:layout_marginEnd="80dp"
+            android:padding="4dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.504"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelGoalCategory" />
+
+        <TextView
+
+            android:id="@+id/labelGoalCategory"
+
+            android:layout_width="250dp"
+
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="80dp"
+
+            android:layout_marginTop="12dp"
+
+            android:layout_marginEnd="80dp"
+
+            android:text="Category"
+
+            android:textColor="?android:attr/textColorSecondary"
+
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextDescription" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

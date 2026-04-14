@@ -2,6 +2,7 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,7 +11,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="40dp">
+        android:paddingBottom="40dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="35dp">
 
         <!-- Back button -->
         <Button
@@ -44,12 +47,12 @@
             android:id="@+id/imgChallengeLogo"
             android:layout_width="45dp"
             android:layout_height="39dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:scaleType="centerCrop"
-            app:shapeAppearanceOverlay="@style/CircleImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/CircleImage"
             app:srcCompat="@drawable/coinbudgetra" />
 
         <!-- Screen title -->
@@ -81,12 +84,15 @@
             app:layout_constraintTop_toBottomOf="@+id/txtChallengeFormTitle" />
 
         <!-- Description -->
+
+        <!-- Category -->
+
         <EditText
             android:id="@+id/editChallengeDescription"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:gravity="top"
             android:hint="Description (optional)"
@@ -94,23 +100,37 @@
             android:minLines="2"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.412"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editChallengeName" />
 
-        <!-- Category -->
-        <EditText
-            android:id="@+id/editChallengeCategory"
+        <TextView
+            android:id="@+id/labelChallengeCategory"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="14dp"
             android:layout_marginEnd="24dp"
-            android:hint="Category (e.g. Food, Transport)"
-            android:inputType="text"
-            android:textSize="13sp"
+            android:text="Category"
+            android:textSize="12sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editChallengeDescription" />
+            app:layout_constraintTop_toBottomOf="@id/editChallengeDescription" />
+
+
+        <Spinner
+            android:id="@+id/spinnerChallengeCategory"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="24dp"
+            android:padding="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/labelChallengeCategory" />
+
 
         <!-- Date section label -->
         <TextView
@@ -126,7 +146,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editChallengeCategory" />
+            app:layout_constraintTop_toBottomOf="@+id/spinnerChallengeCategory" />
 
         <!-- Start date and End date row -->
         <LinearLayout
@@ -168,17 +188,17 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginStart="8dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:text="End Date"
-                    android:textSize="11sp"
                     android:textColor="?android:attr/textColorSecondary"
-                    android:layout_marginBottom="4dp" />
+                    android:textSize="11sp" />
 
                 <Button
                     android:id="@+id/btnPickEndDate"
@@ -200,9 +220,9 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="24dp"
             android:text="Challenge Budget (R)"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:textColor="?android:attr/textColorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutDatePickers" />
@@ -223,25 +243,25 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginEnd="8dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:text="Budget Maximum (R)"
-                    android:textSize="11sp"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="11sp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
                     android:text="Max you are allowed to spend"
-                    android:textSize="10sp"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="10sp" />
 
                 <EditText
                     android:id="@+id/editChallengeBudgetMax"
@@ -257,8 +277,8 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginStart="8dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
@@ -266,8 +286,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:text="Amount Adding (R)"
-                    android:textSize="11sp"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="11sp" />
 
 
                 <TextView
@@ -275,8 +295,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
                     android:text="How much you are putting in"
-                    android:textSize="10sp"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="10sp" />
 
                 <EditText
                     android:id="@+id/editChallengeAmountSaved"
@@ -296,12 +316,13 @@
             android:id="@+id/btnSaveChallenge"
             android:layout_width="160dp"
             android:layout_height="48dp"
-            android:layout_marginTop="36dp"
-            android:text="Save Challenge"
-            android:textSize="12sp"
+            android:layout_marginTop="40dp"
             android:backgroundTint="@color/lemongreen"
+            android:text="Save Challenge"
             android:textColor="@color/whitesmoke"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.454"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutAmounts" />
 

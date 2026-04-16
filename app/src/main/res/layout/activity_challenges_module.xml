@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Challenges_Module">
+    tools:context=".Challenges_Module"
+    android:background="#F4F6FA">
 
     <TextView
         android:id="@+id/textView21"

@@ -3,6 +3,7 @@ package com.example.coin_budgetra
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -29,11 +30,13 @@ class Expense_Module : AppCompatActivity() {
 
         recyclerExpenses = findViewById(R.id.recyclerExpenses)
 
-        adapter = ExpenseAdapter(ExpenseRepository.expenses) { _, position ->
+        adapter = ExpenseAdapter(ExpenseRepository.expenses, {expense , position ->
             val intent = Intent(this, Create_Expense::class.java)
             intent.putExtra("position", position)
             startActivity(intent)
-        }
+        },{
+            updateTotalExpenses()
+        })
 
         recyclerExpenses.layoutManager = LinearLayoutManager(this)
         recyclerExpenses.adapter = adapter
@@ -48,10 +51,19 @@ class Expense_Module : AppCompatActivity() {
         btnBack.setOnClickListener {
             startActivity(Intent(this, Dashboard_Module::class.java))
         }
+        updateTotalExpenses()
     }
 
     override fun onResume() {
         super.onResume()
         adapter.refreshList()
+        updateTotalExpenses()
     }
+    
+    private fun updateTotalExpenses() {
+        val total = ExpenseRepository.expenses.sumOf {
+            it.amountAdded
+        }
+        val txtTotal = findViewById<TextView>(R.id.txtTotalExpenses)
+        txtTotal.text = "Spent: R$total  |  Budget: R${ExpenseRepository.expenses.sumOf { it.spendingLimit }}"}
 }

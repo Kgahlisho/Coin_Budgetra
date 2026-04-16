@@ -15,7 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class ExpenseAdapter(
     private val expenses: MutableList<Expense>,
-    private val onEditClicked: (expense: Expense, position: Int) -> Unit
+    private val onEditClicked: (expense: Expense, position: Int) -> Unit,
+    private val onTotalChanged: () -> Unit
 ) : RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
 
     class ExpenseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -61,6 +62,7 @@ class ExpenseAdapter(
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
+
             }
 
             // Show a simple input dialog
@@ -89,6 +91,7 @@ class ExpenseAdapter(
                         else -> {
                             exp.amountAdded += toAdd
                             notifyItemChanged(pos)
+                            onTotalChanged()
                             Toast.makeText(
                                 holder.itemView.context,
                                 "R$toAdd added to \"${exp.name}\"",
@@ -97,6 +100,7 @@ class ExpenseAdapter(
                         }
                     }
                     dialog.dismiss()
+
                 }
                 .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
                 .show()
@@ -119,12 +123,14 @@ class ExpenseAdapter(
                         expenses.removeAt(pos)
                         notifyItemRemoved(pos)
                         notifyItemRangeChanged(pos, expenses.size)
+                        onTotalChanged()
                     }
                     dialog.dismiss()
                 }
                 .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
                 .show()
         }
+
     }
 
     private fun bindProgress(holder: ExpenseViewHolder, expense: Expense) {

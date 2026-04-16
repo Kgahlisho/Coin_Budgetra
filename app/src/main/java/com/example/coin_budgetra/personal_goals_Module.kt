@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -61,6 +62,7 @@ class personal_goals_Module : AppCompatActivity() {
             )
         }
         adapter.refreshList()
+        updateTotalSavings(goalsList)
     }
 
 
@@ -73,11 +75,12 @@ class personal_goals_Module : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+
         }
 
         recyclerView = findViewById(R.id.recyclerGoals)
 
-        adapter = GoalAdapter(goalsList) { goal, position ->
+        adapter = GoalAdapter(goalsList, { goal, position ->
             val intent = Intent(this, Add_goal::class.java).apply {
                 putExtra("isEdit", true)
                 putExtra("position", position)
@@ -88,7 +91,10 @@ class personal_goals_Module : AppCompatActivity() {
                 putExtra("saved", goal.savedAmount)
             }
             addGoalLauncher.launch(intent)
-        }
+        }, {
+            updateTotalSavings(goalsList)
+        })
+
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
@@ -105,16 +111,17 @@ class personal_goals_Module : AppCompatActivity() {
             adapter.applyFilter("Completed")
             updateFilterButtons("Completed")
         }
-            findViewById<Button>(R.id.button16).setOnClickListener {
-                startActivity(Intent(this, Dashboard_Module::class.java))
-            }
-
-            // Add new goal
-            findViewById<Button>(R.id.buttonAddGoal).setOnClickListener {
-                addGoalLauncher.launch(Intent(this, Add_goal::class.java))
-            }
+        findViewById<Button>(R.id.button16).setOnClickListener {
+            startActivity(Intent(this, Dashboard_Module::class.java))
         }
 
+        // Add new goal
+        findViewById<Button>(R.id.buttonAddGoal).setOnClickListener {
+            addGoalLauncher.launch(Intent(this, Add_goal::class.java))
+        }
+
+        updateTotalSavings(goalsList)
+    }
         private fun updateFilterButtons(active: String) {
             val btnAll = findViewById<Button>(R.id.btnFilterAll)
             val btnActive = findViewById<Button>(R.id.btnFilterActive)
@@ -128,6 +135,13 @@ class personal_goals_Module : AppCompatActivity() {
                 "Completed" -> btnCompleted.alpha = 1.0f
             }
         }
+
+    private fun updateTotalSavings(goals :List<Goal>){
+        val total = goals.sumOf{it.savedAmount}
+
+        val txtTotal = findViewById<TextView>(R.id.txtTotalSavings)
+        txtTotal.text = "Total Saved: R %,d".format(total)
+    }
     }
 
 /*

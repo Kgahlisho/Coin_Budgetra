@@ -15,7 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class GoalAdapter(
     private val goals: MutableList<Goal>,
-    private val onEditClicked: (goal: Goal, position: Int) -> Unit
+    private val onEditClicked: (goal: Goal, position: Int) -> Unit,
+    private val onTotalChanged: () -> Unit
 ) : RecyclerView.Adapter<GoalAdapter.GoalViewHolder>() {
 
     var currentFilter: String = "All"
@@ -24,9 +25,9 @@ class GoalAdapter(
     fun applyFilter(filter: String) {
         currentFilter = filter
         filteredGoals = when (filter) {
-            "Active"    -> goals.filter { !it.isCompleted }.toMutableList()
+            "Active" -> goals.filter { !it.isCompleted }.toMutableList()
             "Completed" -> goals.filter { it.isCompleted }.toMutableList()
-            else        -> goals.toMutableList()
+            else -> goals.toMutableList()
         }
         notifyDataSetChanged()
     }
@@ -37,22 +38,20 @@ class GoalAdapter(
     }
 
     class GoalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val txtName: TextView            = itemView.findViewById(R.id.txtGoalName)
-        val txtStatus: TextView          = itemView.findViewById(R.id.txtStatus)
-        val txtDescription: TextView     = itemView.findViewById(R.id.txtDescription)
-        val txtCategory: TextView        = itemView.findViewById(R.id.txtCategory)
-        val txtTarget: TextView          = itemView.findViewById(R.id.txtTarget)
-        val txtSaved: TextView           = itemView.findViewById(R.id.txtSaved)
-        val progressBar: ProgressBar     = itemView.findViewById(R.id.progressGoal)
+        val txtName: TextView = itemView.findViewById(R.id.txtGoalName)
+        val txtStatus: TextView = itemView.findViewById(R.id.txtStatus)
+        val txtDescription: TextView = itemView.findViewById(R.id.txtDescription)
+        val txtCategory: TextView = itemView.findViewById(R.id.txtCategory)
+        val txtTarget: TextView = itemView.findViewById(R.id.txtTarget)
+        val txtSaved: TextView = itemView.findViewById(R.id.txtSaved)
+        val progressBar: ProgressBar = itemView.findViewById(R.id.progressGoal)
         val layoutAddMoney: LinearLayout = itemView.findViewById(R.id.layoutAddMoney)
-        val inputAdd: EditText           = itemView.findViewById(R.id.inputAddAmount)
-        val btnAdd: Button               = itemView.findViewById(R.id.btnAddMoney)
-        val btnEdit: Button              = itemView.findViewById(R.id.btnEdit)
-        val btnDelete: Button            = itemView.findViewById(R.id.btnDelete)
-        val txtCompleted: TextView       = itemView.findViewById(R.id.txtCompleted)
+        val inputAdd: EditText = itemView.findViewById(R.id.inputAddAmount)
+        val btnAdd: Button = itemView.findViewById(R.id.btnAddMoney)
+        val btnEdit: Button = itemView.findViewById(R.id.btnEdit)
+        val btnDelete: Button = itemView.findViewById(R.id.btnDelete)
+        val txtCompleted: TextView = itemView.findViewById(R.id.txtCompleted)
     }
-
-
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GoalViewHolder {
@@ -68,14 +67,15 @@ class GoalAdapter(
         val goal = filteredGoals[position]
         val completed = goal.isCompleted
 
-        holder.txtName.text        = goal.name
+        holder.txtName.text = goal.name
         holder.txtDescription.text = goal.description.ifEmpty { "No description" }
-        holder.txtCategory.text    = "Category: " + goal.category.ifEmpty { "General" }
-        holder.txtTarget.text      = "Target: R${goal.targetAmount}"
-        holder.txtSaved.text       = "Saved: R${goal.savedAmount}"
+        holder.txtCategory.text = "Category: " + goal.category.ifEmpty { "General" }
+        holder.txtTarget.text = "Target: R${goal.targetAmount}"
+        holder.txtSaved.text = "Saved: R${goal.savedAmount}"
 
         //comment here
-        val progress = if (goal.targetAmount > 0) (goal.savedAmount * 100) / goal.targetAmount else 0
+        val progress =
+            if (goal.targetAmount > 0) (goal.savedAmount * 100) / goal.targetAmount else 0
         holder.progressBar.progress = progress
 
         if (completed) {
@@ -96,28 +96,41 @@ class GoalAdapter(
 
         if (completed) {
             holder.layoutAddMoney.visibility = View.GONE
-            holder.txtCompleted.visibility   = View.VISIBLE
+            holder.txtCompleted.visibility = View.VISIBLE
         } else {
             holder.layoutAddMoney.visibility = View.VISIBLE
-            holder.txtCompleted.visibility   = View.GONE
+            holder.txtCompleted.visibility = View.GONE
         }
 
 
         //comment here
         holder.btnAdd.setOnClickListener {
             val input = holder.inputAdd.text.toString()
+
             if (input.isEmpty()) {
-                Toast.makeText(holder.itemView.context, "Enter an amount", Toast.LENGTH_SHORT).show()
+                Toast.makeText(holder.itemView.context, "Enter an amount", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
-            val amountToAdd = try { input.toInt() } catch (e: NumberFormatException) {
-                Toast.makeText(holder.itemView.context, "Invalid number", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            val amountToAdd =
+                try {
+                    input.toInt()
+                } catch (e: NumberFormatException) {
+                    Toast.makeText(holder.itemView.context, "Invalid number", Toast.LENGTH_SHORT)
+                        .show()
+                    return@setOnClickListener
+                }
+
             goal.savedAmount += amountToAdd
-            if (goal.savedAmount > goal.targetAmount) goal.savedAmount = goal.targetAmount
+
+            if (goal.savedAmount > goal.targetAmount) {
+                goal.savedAmount = goal.targetAmount
+            }
+
             holder.inputAdd.text.clear()
             notifyItemChanged(holder.adapterPosition)
+
+            onTotalChanged()
         }
 
         holder.btnEdit.setOnClickListener {
@@ -137,14 +150,19 @@ class GoalAdapter(
             AlertDialog.Builder(holder.itemView.context)
                 .setTitle("Delete Goal")
                 .setMessage("Are you sure you want to delete \"${goal.name}\"?")
+
                 .setPositiveButton("Delete") { dialog, _ ->
                     val realIndex = goals.indexOf(filteredGoals[pos])
                     if (realIndex >= 0) goals.removeAt(realIndex)
                     refreshList()
+                    onTotalChanged()
                     dialog.dismiss()
                 }
-                .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+                    .setNegativeButton("Cancel") { dialog, _ ->
+                        dialog.dismiss()
+                    }
                 .show()
+
+                }
         }
     }
-}

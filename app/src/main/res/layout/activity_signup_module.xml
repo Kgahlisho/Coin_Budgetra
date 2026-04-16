@@ -8,11 +8,7 @@
     android:background="@drawable/gradient1"
     tools:context=".Signup_module">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#55ffffff"
-        android:padding="16dp"/>
+
 
 
     <TextView

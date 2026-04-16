@@ -17,7 +17,8 @@ import java.util.*
 
 class ChallengeAdapter(
     private val challenges: MutableList<Challenge>,
-    private val onEditClicked: (challenge: Challenge, position: Int) -> Unit
+    private val onEditClicked: (challenge: Challenge, position: Int) -> Unit,
+private val onTotalChanged: () -> Unit
 ) : RecyclerView.Adapter<ChallengeAdapter.ChallengeViewHolder>() {
 
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -142,7 +143,7 @@ class ChallengeAdapter(
 
             imm.hideSoftInputFromWindow(holder.editAddAmount.windowToken, 0)
             notifyItemChanged(pos)
-
+        onTotalChanged()
         }
 
 

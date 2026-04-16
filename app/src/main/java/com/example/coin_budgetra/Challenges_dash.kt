@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -51,6 +52,8 @@ class Challenges_dash : AppCompatActivity() {
             }
 
             adapter.refreshList()
+            updatedTotalSaved()
+
         } else {
             challengeList.add(
                 Challenge(
@@ -64,6 +67,7 @@ class Challenges_dash : AppCompatActivity() {
                 )
             )
             adapter.notifyItemInserted(challengeList.size - 1)
+            updatedTotalSaved()
         }
     }
 
@@ -81,20 +85,24 @@ class Challenges_dash : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recyclerChallenge)
 
-        adapter = ChallengeAdapter(challengeList) { challenge, position ->
+        adapter = ChallengeAdapter(challengeList , { challenge, position ->
             val intent = Intent(this, Add_challenge::class.java).apply {
-                putExtra("isEdit",      true)
-                putExtra("position",    position)
-                putExtra("name",        challenge.name)
+                putExtra("isEdit", true)
+                putExtra("position", position)
+                putExtra("name", challenge.name)
                 putExtra("description", challenge.description)
-                putExtra("category",    challenge.category)
-                putExtra("startDate",   challenge.startDate)
-                putExtra("endDate",     challenge.endDate)
-                putExtra("budgetMax",   challenge.budgetMax)
+                putExtra("category", challenge.category)
+                putExtra("startDate", challenge.startDate)
+                putExtra("endDate", challenge.endDate)
+                putExtra("budgetMax", challenge.budgetMax)
                 putExtra("amountSaved", challenge.amountSaved)
             }
+
             addChallengeLauncher.launch(intent)
-        }
+        },{
+            updatedTotalSaved()
+        })
+
 
 
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -104,6 +112,15 @@ class Challenges_dash : AppCompatActivity() {
         findViewById<Button>(R.id.btnCreateChallengeGoal).setOnClickListener {
             addChallengeLauncher.launch(Intent(this, Add_challenge::class.java))
         }
+        updatedTotalSaved()
+
+    }
+    private fun updatedTotalSaved(){
+        val total = challengeList.sumOf{
+            it.amountSaved
+        }
+        val txtTotal = findViewById<TextView>(R.id.txtTotalSaved)
+        txtTotal.text = "Total Accumilated : R$total"
     }
 }
 

@@ -20,7 +20,7 @@ class Challenges_dash : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ChallengeAdapter
-    private val challengeList = mutableListOf<Challenge>()
+    private val challengeList = ChallengeRepository.challenges
 
     private val addChallengeLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -116,7 +116,7 @@ class Challenges_dash : AppCompatActivity() {
 
     }
     private fun updatedTotalSaved(){
-        val total = challengeList.sumOf{
+        val total = ChallengeRepository.challenges.sumOf{
             it.amountSaved
         }
         val txtTotal = findViewById<TextView>(R.id.txtTotalSaved)

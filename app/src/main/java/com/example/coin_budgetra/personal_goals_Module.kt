@@ -18,7 +18,7 @@ class personal_goals_Module : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: GoalAdapter
-    private val goalsList = mutableListOf<Goal>()
+    private val goalsList = GoalRepository.goals
 
     private val addGoalLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -137,7 +137,9 @@ class personal_goals_Module : AppCompatActivity() {
         }
 
     private fun updateTotalSavings(goals :List<Goal>){
-        val total = goals.sumOf{it.savedAmount}
+        val total = GoalRepository.goals.sumOf{
+            it.savedAmount
+        }
 
         val txtTotal = findViewById<TextView>(R.id.txtTotalSavings)
         txtTotal.text = "Total Saved: R %,d".format(total)

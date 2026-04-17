@@ -121,15 +121,21 @@ class GoalAdapter(
                     return@setOnClickListener
                 }
 
-            goal.savedAmount += amountToAdd
+            val newTotal = goal.savedAmount + amountToAdd
 
-            if (goal.savedAmount > goal.targetAmount) {
-                goal.savedAmount = goal.targetAmount
+            if (newTotal > goal.targetAmount)
+            {
+                val remaining = goal.targetAmount - goal.savedAmount
+                Toast.makeText(holder.itemView.context,
+                "Only R$remaining remaining to reach target. ",
+                Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+
             }
+            goal.savedAmount = newTotal
 
             holder.inputAdd.text.clear()
-            notifyItemChanged(holder.adapterPosition)
-
+            refreshList()
             onTotalChanged()
         }
 

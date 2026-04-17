@@ -112,7 +112,8 @@ private val onTotalChanged: () -> Unit
 
             val pos = holder.adapterPosition
 
-            if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
+            if (pos == RecyclerView.NO_POSITION)
+                return@setOnClickListener
 
                 val input = holder.editAddAmount.text.toString().trim()
                 val toAdd = input.toIntOrNull()
@@ -164,6 +165,7 @@ private val onTotalChanged: () -> Unit
                 challenges.removeAt(pos)
                 notifyItemRemoved(pos)
                 notifyItemRangeChanged(pos, challenges.size)
+          onTotalChanged()
             }
             dialog.dismiss()
         }
@@ -172,5 +174,7 @@ private val onTotalChanged: () -> Unit
         }
     }
 
-    fun refreshList() { notifyDataSetChanged() }
+    fun refreshList() {
+        notifyDataSetChanged()
+    }
 }

@@ -89,7 +89,7 @@ class Add_goal : AppCompatActivity() {
             val targetStr   = inputTarget.text.toString().trim()
             val description = inputDescription.text.toString().trim()
             val category    = spinnerCategory.selectedItem?.toString()
-                ?.takeIf{it != " + Add new .."} ?: "General"
+                ?.takeIf{ it != "+ Add new"} ?: "General"
             val initialStr  = if (isEdit) "0" else inputInitial.text.toString().trim().ifEmpty { "0" }
 
             if (name.isEmpty() || targetStr.isEmpty()) {

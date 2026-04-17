@@ -139,40 +139,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
-                android:layout_marginTop="25sp"
+                android:layout_marginTop="15sp"
+                android:textStyle="bold"
                 android:text="Welcome back , John Doe."
-                android:textSize="10sp" />
-
-            <TextView
-                android:id="@+id/txtDashboardExpenses"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Expenses : "
-
-                android:textSize="13sp"
-                android:textColor="#B71c1c"
-                android:layout_marginTop="3sp"
-                android:layout_marginBottom="3dp"/>
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/txtDashboardGoals"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Goals saved: "
-
+                android:text="Goals saved: 0 "
+                android:layout_marginLeft="10dp"
                 android:textSize="13sp"
-                android:textColor="#2e7d32"
+
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="3dp"/>
 
             <TextView
                 android:id="@+id/txtDashboardChallenges"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Challenges : "
+                android:text="Challenges : 0 "
 
                 android:textSize="13sp"
-                android:textColor="#1565c0"
+                android:layout_marginLeft="10dp"
                 android:layout_marginBottom="3dp"/>
+
+            <TextView
+                android:id="@+id/txtDashboardExpenses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="Expenses : 0 "
+                android:layout_marginLeft="10dp"
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/txtNetBalance"
@@ -182,6 +182,7 @@
                 android:textStyle="bold"
                 android:textSize="13sp"
                 android:textColor="@color/black"
+                android:layout_marginLeft="25dp"
                 android:layout_marginTop="6dp"
                 android:layout_marginBottom="6dp"/>
 

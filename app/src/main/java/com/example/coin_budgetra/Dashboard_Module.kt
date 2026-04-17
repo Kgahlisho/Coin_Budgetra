@@ -15,18 +15,20 @@ class Dashboard_Module : AppCompatActivity() {
 
     private fun  updateDashboardTotals()
     {
-        val totalExpenses = ExpenseRepository.expenses.sumOf{ it.amountAdded }
+
         val totalGoals = GoalRepository.goals.sumOf { it.savedAmount }
         val totalChallenges = ChallengeRepository.challenges.sumOf { it.amountSaved }
+        val totalExpenses = ExpenseRepository.expenses.sumOf{ it.amountAdded }
 
         val net = totalGoals + totalChallenges - totalExpenses
 
 
-    findViewById<TextView>(R.id.txtDashboardExpenses).text = "Expenses: R$totalExpenses"
+
 
         findViewById<TextView>(R.id.txtDashboardGoals).text = "Goals saved : R$totalGoals"
 
         findViewById<TextView>(R.id.txtDashboardChallenges).text = "Challenges Saved : R$totalChallenges"
+        findViewById<TextView>(R.id.txtDashboardExpenses).text = "Expenses: R$totalExpenses"
 
         findViewById<TextView>(R.id.txtNetBalance).text = "Net Balance : R%d".format(net)
     }

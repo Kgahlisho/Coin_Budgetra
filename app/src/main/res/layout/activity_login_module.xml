@@ -91,13 +91,13 @@
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_marginStart="160dp"
         android:layout_marginTop="19dp"
         android:layout_marginEnd="160dp"
         android:backgroundTint="@color/lemongreen"
-        android:textColor="@color/black"
         android:text="Login"
+        android:textColor="@color/black"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

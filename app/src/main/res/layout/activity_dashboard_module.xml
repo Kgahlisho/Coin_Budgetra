@@ -127,14 +127,67 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11">
 
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="25sp"
-            android:text="Welcome back , John Doe."
-            android:textSize="10sp" />
+            android:orientation="vertical"
+            android:padding="12dp">
+
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="25sp"
+                android:text="Welcome back , John Doe."
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/txtDashboardExpenses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Expenses : "
+
+                android:textSize="13sp"
+                android:textColor="#B71c1c"
+                android:layout_marginTop="3sp"
+                android:layout_marginBottom="3dp"/>
+
+            <TextView
+                android:id="@+id/txtDashboardGoals"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Goals saved: "
+
+                android:textSize="13sp"
+                android:textColor="#2e7d32"
+                android:layout_marginBottom="3dp"/>
+
+            <TextView
+                android:id="@+id/txtDashboardChallenges"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Challenges : "
+
+                android:textSize="13sp"
+                android:textColor="#1565c0"
+                android:layout_marginBottom="3dp"/>
+
+            <TextView
+                android:id="@+id/txtNetBalance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Net Balance: R0"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"/>
+
+        </LinearLayout>
+
+
 
     </androidx.cardview.widget.CardView>
 

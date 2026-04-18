@@ -73,10 +73,10 @@ class Dashboard_Module : AppCompatActivity() {
             val intent = Intent(this, Challenges_Module::class.java)
             startActivity(intent);
         }
-        //we use the logged in users name to display in the dashbooard cardview
+        //we use the logged-in users name to display in the dashbooard cardview
         val welcomeText = findViewById<TextView>(R.id.textView13)
 
-        val user = UserRepository.currentUser
+        val user = UserSession.currentUser
 
         if (user != null){
             welcomeText.text = "Welcome back ${user.name} ${user.surname}."

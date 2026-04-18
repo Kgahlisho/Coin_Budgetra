@@ -9,6 +9,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class Login_module : AppCompatActivity() {
 
@@ -25,6 +28,8 @@ class Login_module : AppCompatActivity() {
 
         val emailInput = findViewById<EditText>(R.id.editTextText)
         val passwordInput = findViewById<EditText>(R.id.editTextText2)
+        val db = UserDatabase.getDatabase(this)
+        val dao = db.userDao()
 
 
         val CompleteLogin = this.findViewById<Button>(R.id.button);
@@ -59,30 +64,37 @@ class Login_module : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val user = UserRepository.users.find {
+           /* val user = UserRepository.users.find {
                 it.email == email && it.password == password
+            }*/
+
+
+
+            CoroutineScope(Dispatchers.IO).launch {
+
+                val user = dao.login(email,password)
+
+                runOnUiThread {
+                    if (user == null) {
+                        passwordInput.error = "Invalid email or password"
+                        passwordInput.requestFocus()
+
+                    }else{
+                        Toast.makeText(this@Login_module, "Login successful! ", Toast.LENGTH_SHORT).show()
+
+                        UserSession.currentUser = user
+
+                        startActivity(Intent(this@Login_module, Dashboard_Module::class.java))
+                        finish()
+                    }
+                }
             }
-
-            if (user == null) {
-                passwordInput.error = "Invalid email or password"
-                passwordInput.requestFocus()
-                return@setOnClickListener
-            }
-
-            UserRepository.currentUser = user
-
-
-            Toast.makeText(this, "Login successful! ", Toast.LENGTH_SHORT).show()
-
-            startActivity(Intent(this, Dashboard_Module::class.java))
-            finish()
+           // UserRepository.currentUser = user
         }
 
         findViewById<Button>(R.id.button3).setOnClickListener {
             startActivity(Intent(this, Signup_module::class.java))
             finish()
         }
-
-
     }
 }

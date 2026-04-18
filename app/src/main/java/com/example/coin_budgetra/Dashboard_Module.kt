@@ -86,22 +86,17 @@ class Dashboard_Module : AppCompatActivity() {
         val logoutBtn = findViewById<Button>(R.id.btnLogout)
 
         logoutBtn.setOnClickListener {
-            val intent = Intent(this, Login_module::class.java)
-
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-
+            AlertDialog.Builder(this)
+                .setTitle("Sign out")
+                .setMessage("Are you sure you want to sign out?")
+                .setPositiveButton("Yes") { _, _ ->
+                    UserSession.currentUser = null
+                    val intent = Intent(this, Login_module::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
         }
-
-        AlertDialog.Builder(this)
-            .setTitle("Sign out")
-            .setMessage("are you sure you want to exit?")
-            .setPositiveButton("yes") { _, _ ->
-                val intent = Intent(this, Login_module::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
     }
 }

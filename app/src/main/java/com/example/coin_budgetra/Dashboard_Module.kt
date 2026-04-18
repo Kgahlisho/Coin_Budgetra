@@ -1,5 +1,6 @@
 package com.example.coin_budgetra
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
@@ -13,12 +14,11 @@ import androidx.core.view.WindowInsetsCompat
 
 class Dashboard_Module : AppCompatActivity() {
 
-    private fun  updateDashboardTotals()
-    {
+    private fun updateDashboardTotals() {
 
         val totalGoals = GoalRepository.goals.sumOf { it.savedAmount }
         val totalChallenges = ChallengeRepository.challenges.sumOf { it.amountSaved }
-        val totalExpenses = ExpenseRepository.expenses.sumOf{ it.amountAdded }
+        val totalExpenses = ExpenseRepository.expenses.sumOf { it.amountAdded }
 
         val net = totalGoals + totalChallenges - totalExpenses
 
@@ -27,13 +27,14 @@ class Dashboard_Module : AppCompatActivity() {
 
         findViewById<TextView>(R.id.txtDashboardGoals).text = "Goals saved : R$totalGoals"
 
-        findViewById<TextView>(R.id.txtDashboardChallenges).text = "Challenges Saved : R$totalChallenges"
+        findViewById<TextView>(R.id.txtDashboardChallenges).text =
+            "Challenges Saved : R$totalChallenges"
         findViewById<TextView>(R.id.txtDashboardExpenses).text = "Expenses: R$totalExpenses"
 
         findViewById<TextView>(R.id.txtNetBalance).text = "Net Balance : R%d".format(net)
     }
 
-    override fun onResume(){
+    override fun onResume() {
         super.onResume()
         updateDashboardTotals()
     }
@@ -78,8 +79,29 @@ class Dashboard_Module : AppCompatActivity() {
 
         val user = UserSession.currentUser
 
-        if (user != null){
+        if (user != null) {
             welcomeText.text = "Welcome back ${user.name} ${user.surname}."
         }
+
+        val logoutBtn = findViewById<Button>(R.id.btnLogout)
+
+        logoutBtn.setOnClickListener {
+            val intent = Intent(this, Login_module::class.java)
+
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle("Sign out")
+            .setMessage("are you sure you want to exit?")
+            .setPositiveButton("yes") { _, _ ->
+                val intent = Intent(this, Login_module::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 }

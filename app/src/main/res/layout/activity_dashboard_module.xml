@@ -192,6 +192,18 @@
 
     </androidx.cardview.widget.CardView>
 
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="Signout"
+        android:textColor="@color/whitesmoke"
+        android:backgroundTint="@color/rubyred"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView4"
         android:layout_width="45dp"

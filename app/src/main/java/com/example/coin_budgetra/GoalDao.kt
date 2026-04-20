@@ -21,6 +21,9 @@ interface GoalDao {
     @Query("SELECT * FROM goals WHERE userId = :userId")
     suspend fun getGoalsForUser(userId: Int): List<Goal>
 
+    @Query("SELECT * FROM goals WHERE userId = :userId AND savedAmount >= targetAmount")
+    suspend fun getCompletedGoals(userId: Int): List<Goal>
+
     @Query("SELECT * FROM goals WHERE id = :id LIMIT 1")
     suspend fun getGoalById(id: Int): Goal?
 

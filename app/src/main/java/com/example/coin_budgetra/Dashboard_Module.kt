@@ -4,12 +4,14 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -112,5 +114,58 @@ class Dashboard_Module : AppCompatActivity() {
                 .setNegativeButton("Cancel", null)
                 .show()
         }
+
+       /* val db = UserDatabase.getDatabase(this)
+        val goalDao = db.goalDao()
+        val expenseDao = db.expenseDao()
+*/
+        CoroutineScope(Dispatchers.IO).launch {
+
+           // val email = UserSession.getUserEmail(this@Dashboard_Module)
+           // val user = db.userDao().getUserByEmail(email!!)
+            val userId = UserSession.currentUser?.id ?:
+                return@launch
+
+            val completedGoals = goalDao.getCompletedGoals(userId)
+            val completedExpenses = dao.getCompletedExpenses(userId)
+            val completedChallenges = challengeDao.getCompletedChallenges(userId)
+
+            runOnUiThread {
+                showAchievements(completedGoals, completedExpenses , completedChallenges)
+            }
+        }
+
+
     }
-}
+
+    fun showAchievements(goals: List<Goal>, expenses: List<Expense>, challenges: List<Challenge>)
+    {
+
+        val container = findViewById<LinearLayout>(R.id.achievementContainer)
+        container.removeAllViews()
+
+        goals.forEach {
+            val tv = TextView(this)
+            tv.text = " Goals  : ${it.name}"
+            tv.textSize = 11f
+            tv.setPadding(0,8,0,8)
+            container.addView(tv)
+        }
+
+        expenses.forEach {
+            val tv = TextView(this)
+            tv.text = " Expense Covered : ${it.name}"
+            tv.textSize = 11f
+            tv.setPadding(0,8,0,8)
+            container.addView(tv)
+        }
+
+        challenges.forEach {
+            val tv =TextView(this)
+            tv.text = " Challenge : ${it.name}"
+            tv.textSize = 11f
+            tv.setPadding(0,8,0,8)
+            container.addView(tv)
+        }
+        }
+    }

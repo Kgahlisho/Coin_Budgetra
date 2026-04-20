@@ -70,6 +70,8 @@ private val defaultCategories = mutableListOf(
         val position =
             intent.getIntExtra("position", -1)
 
+//completion logic:
+        val isCompleted: Boolean = false
 
         spinnerAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item,defaultCategories)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

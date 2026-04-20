@@ -21,6 +21,9 @@ interface ChallengeDao {
     @Query("SELECT * FROM challenges WHERE userId = :userId")
     suspend fun getChallengesForUser(userId: Int): List<Challenge>
 
+    @Query("SELECT * FROM challenges WHERE userId = :userId AND amountSaved >= budgetMax")
+    suspend fun getCompletedChallenges(userId: Int): List<Challenge>
+
     @Query("SELECT * FROM challenges WHERE id = :id LIMIT 1")
     suspend fun getChallengeById(id: Int): Challenge?
 

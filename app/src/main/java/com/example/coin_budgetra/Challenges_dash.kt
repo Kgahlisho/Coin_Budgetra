@@ -130,7 +130,7 @@ class Challenges_dash : AppCompatActivity() {
             updatedTotalSaved()
         })
 
-
+        //completion logic
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter

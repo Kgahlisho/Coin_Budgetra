@@ -26,6 +26,9 @@ interface ExpenseDao {
     @Query("SELECT * FROM expenses WHERE id = :id LIMIT 1")
     suspend fun getExpenseById(id: Int): Expense?
 
+    @Query("SELECT * FROM expenses WHERE userId = :userId AND amountAdded >= spendingLimit")
+    suspend fun getCompletedExpenses(userId: Int): List<Expense>
+
     @Query("SELECT SUM(amountAdded) FROM expenses WHERE userId = :userId")
     suspend fun getTotalSpentForUser(userId: Int): Int?
 

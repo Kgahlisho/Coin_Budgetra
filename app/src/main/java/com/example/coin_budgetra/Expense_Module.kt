@@ -48,6 +48,8 @@ class Expense_Module : AppCompatActivity() {
             updateTotalExpenses()
         })
 
+        val isCompleted: Boolean = false
+
         recyclerExpenses.layoutManager = LinearLayoutManager(this)
         recyclerExpenses.adapter = adapter
 

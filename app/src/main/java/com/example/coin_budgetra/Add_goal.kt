@@ -55,6 +55,7 @@ class Add_goal : AppCompatActivity() {
         val isEdit   = intent.getBooleanExtra("isEdit", false)
        // val position = intent.getIntExtra("position", -1)
 
+        val isCompleted: Boolean = false
 
         spinnerAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item,defaultCategories)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

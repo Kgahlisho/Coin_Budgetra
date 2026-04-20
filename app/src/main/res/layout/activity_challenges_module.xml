@@ -8,6 +8,22 @@
     tools:context=".Challenges_Module"
     android:background="#F4F6FA">
 
+
+    <com.google.android.material.imageview.ShapeableImageView
+
+        android:id="@+id/imageView5"
+        android:layout_width="129dp"
+        android:layout_height="127dp"
+        android:layout_marginStart="141dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="141dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/target"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView22"
+        app:shapeAppearanceOverlay="@style/CircleImage" />
+
     <TextView
         android:id="@+id/textView21"
         android:layout_width="wrap_content"
@@ -54,14 +70,14 @@
         android:id="@+id/textView23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="20dp"
         android:text="Create new Challenge"
         android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView22" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
     <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -71,12 +87,12 @@
         android:layout_width="100dp"
         android:layout_height="35dp"
         android:layout_marginStart="160dp"
-        android:layout_marginTop="372dp"
+        android:layout_marginTop="288dp"
         android:layout_marginEnd="160dp"
-        android:text="Cancel"
-        android:textSize="10sp"
         android:backgroundTint="@color/CatalinaBlue"
+        android:text="Cancel"
         android:textColor="@color/whitesmoke"
+        android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"

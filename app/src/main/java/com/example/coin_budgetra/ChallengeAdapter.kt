@@ -11,6 +11,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,7 +28,9 @@ private val onTotalChanged: () -> Unit
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     class ChallengeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val txtName: TextView        = itemView.findViewById(R.id.txtChallengeName)
+
+       val dao: ChallengeDao = UserDatabase.getDatabase(itemView.context).challengeDao()
+         val txtName: TextView        = itemView.findViewById(R.id.txtChallengeName)
         val txtDescription: TextView = itemView.findViewById(R.id.txtChallengeDescription)
         val txtCategory: TextView    = itemView.findViewById(R.id.txtChallengeCategory)
         val txtDates: TextView       = itemView.findViewById(R.id.txtChallengeDates)
@@ -49,8 +55,11 @@ private val onTotalChanged: () -> Unit
 
     override fun getItemCount(): Int = challenges.size
 
+
+
     override fun onBindViewHolder(holder: ChallengeViewHolder, position: Int) {
         val challenge = challenges[position]
+
         val today = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0);      set(Calendar.MILLISECOND, 0)
@@ -65,13 +74,11 @@ private val onTotalChanged: () -> Unit
 
         val isComplete = challenge.amountSaved >= challenge.budgetMax
         val isExpired  = daysLeft < 0
-        val statusText: String
-        val statusColor: Int
 
-        when {
-            isComplete -> { statusText = "Completed";  statusColor = Color.parseColor("#2E7D32") }
-            isExpired  -> { statusText = "Expired";   statusColor = Color.parseColor("#B71C1C") }
-            else       -> { statusText = "Active";    statusColor = Color.parseColor("#1565C0") }
+        val (statusText , statusColor) = when {
+            isComplete ->    "Completed" to Color.parseColor("#2E7D32")
+            isExpired  ->   "Expired" to Color.parseColor("#B71C1C")
+            else       ->   "Active" to Color.parseColor("#1565C0")
         }
 
         val progressPct = if (challenge.budgetMax > 0)
@@ -115,12 +122,16 @@ private val onTotalChanged: () -> Unit
             if (pos == RecyclerView.NO_POSITION)
                 return@setOnClickListener
 
-                val input = holder.editAddAmount.text.toString().trim()
-                val toAdd = input.toIntOrNull()
-                val ch    = challenges[pos]
+            val input = holder.editAddAmount.text.toString().trim()
+            val toAdd = input.toIntOrNull()
+            val ch = challenges[pos]
 
             if (input.isEmpty() || toAdd == null || toAdd <= 0) {
-                Toast.makeText(holder.itemView.context, "Please enter a valid amount to add", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    holder.itemView.context,
+                    "Please enter a valid amount to add",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
 
             }
@@ -130,23 +141,30 @@ private val onTotalChanged: () -> Unit
             if (newTotal > ch.budgetMax) {
 
                 val remaining = ch.budgetMax - ch.amountSaved
-                Toast.makeText(holder.itemView.context, "Only R$remaining remaining to reach the budget max", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    holder.itemView.context,
+                    "Only R$remaining remaining to reach the budget max",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
 
             }
 
-            ch.amountSaved = newTotal
-            holder.editAddAmount.setText("")
-            holder.editAddAmount.clearFocus()
-
-            val imm = holder.itemView.context.getSystemService(android.content.Context.INPUT_METHOD_SERVICE)
-                    as android.view.inputmethod.InputMethodManager
-
-            imm.hideSoftInputFromWindow(holder.editAddAmount.windowToken, 0)
-            notifyItemChanged(pos)
-        onTotalChanged()
+            val updated = ch.copy(amountSaved = newTotal)
+            CoroutineScope(Dispatchers.IO).launch {
+                holder.dao.updateChallenge(updated)
+                withContext(Dispatchers.Main) {
+                    challenges[pos] = updated
+                    holder.editAddAmount.setText("")
+                    holder.editAddAmount.clearFocus()
+                    val imm =
+                        holder.itemView.context.getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+                    imm.hideSoftInputFromWindow(holder.editAddAmount.windowToken, 0)
+                    notifyItemChanged(pos)
+                    onTotalChanged()
+                }
+            }
         }
-
 
 
         holder.btnEdit.setOnClickListener {
@@ -161,11 +179,18 @@ private val onTotalChanged: () -> Unit
                 .setTitle("Delete challenge?")
                 .setMessage("""Are you sure you want to delete \"${challenge.name}"? This cannot be undone.""")
             .setPositiveButton("Delete") { dialog, _ ->
-            if (pos < challenges.size) {
-                challenges.removeAt(pos)
-                notifyItemRemoved(pos)
-                notifyItemRangeChanged(pos, challenges.size)
-          onTotalChanged()
+            CoroutineScope(Dispatchers.IO).launch {
+                holder.dao.deleteChallenge(challenge)
+                withContext(Dispatchers.Main) {
+
+
+                    if (pos < challenges.size) {
+                        challenges.removeAt(pos)
+                        notifyItemRemoved(pos)
+                        notifyItemRangeChanged(pos, challenges.size)
+                        onTotalChanged()
+                    }
+                }
             }
             dialog.dismiss()
         }

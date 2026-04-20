@@ -19,16 +19,17 @@ class Dashboard_Module : AppCompatActivity() {
 
     private lateinit var dao: ExpenseDao
     private lateinit var goalDao: GoalDao
+
+    private lateinit var challengeDao: ChallengeDao
     private fun updateDashboardTotals() {
         val userId = UserSession.currentUser?.id?: return
 
       //  val totalGoals = GoalRepository.goals.sumOf { it.savedAmount }
-        val totalChallenges = ChallengeRepository.challenges.sumOf { it.amountSaved }
-
         lifecycleScope.launch ( Dispatchers.IO){
 
             val totalExpenses = dao.getTotalSpentForUser(userId) ?: 0
             val totalGoals = goalDao.getTotalSavedForUser(userId)?: 0
+            val totalChallenges = challengeDao.getTotalSavedForUser(userId)?: 0
             val net = totalGoals + totalChallenges - totalExpenses
 
             withContext(Dispatchers.Main){
@@ -61,11 +62,11 @@ class Dashboard_Module : AppCompatActivity() {
 
         goalDao = UserDatabase.getDatabase(this).goalDao()
         dao= UserDatabase.getDatabase(this).expenseDao()
+        challengeDao = UserDatabase.getDatabase(this).challengeDao()
 
         val user = UserSession.currentUser
         if (user != null){
             findViewById<TextView>(R.id.textView13).text = "Welcome back ${user.name} ${user.surname}"
-
         }
 
         updateDashboardTotals()

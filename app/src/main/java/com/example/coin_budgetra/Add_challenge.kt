@@ -13,7 +13,6 @@ import androidx.core.view.WindowInsetsCompat
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class Add_challenge : AppCompatActivity() {
 
     private var selectedStartDate: Calendar = Calendar.getInstance()
@@ -200,7 +199,7 @@ private val defaultCategories = mutableListOf(
                 putExtra("challengeBudgetMax", budgetMax)
                 putExtra("challengeAmtSaved", amountSaved)
                 putExtra("isEdit",           isEdit)
-                if (isEdit) putExtra("position", position)
+                if (isEdit) putExtra("challengeId", intent.getIntExtra("challengeId",-1))
             }
             setResult(Activity.RESULT_OK, result)
             finish()
@@ -208,7 +207,10 @@ private val defaultCategories = mutableListOf(
     }
 
     private fun showAddCategoryDialog(spinner: Spinner) {
-        val input = EditText(this).apply { hint = "Enter new category name"; textSize = 14f; setPadding(48, 32, 48, 32) }
+        val input = EditText(this).apply {
+            hint = "Enter new category name";
+            textSize = 14f;
+            setPadding(48, 32, 48, 32) }
         AlertDialog.Builder(this)
 
             .setTitle("New Category")

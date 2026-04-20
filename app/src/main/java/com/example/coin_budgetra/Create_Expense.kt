@@ -2,15 +2,16 @@ package com.example.coin_budgetra
 
 
 import android.app.DatePickerDialog
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.*
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,11 +25,12 @@ class Create_Expense : AppCompatActivity() {
 
 
 
- private val attachedUris: MutableList<String> = mutableListOf()
+ //private val attachedUris: MutableList<String> = mutableListOf()
 
-    private var editPosition: Int = -1
+    private var editExpenseId: Int = -1
+    private lateinit var dao : ExpenseDao
 
-
+/*
     private val pickFileLauncher =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris: List<Uri> ->
             uris.forEach { uri ->
@@ -42,7 +44,7 @@ class Create_Expense : AppCompatActivity() {
             }
             updateDocumentCountLabel()
         }
-
+*/
 
 
     private lateinit var screenTitle:        TextView
@@ -72,6 +74,9 @@ class Create_Expense : AppCompatActivity() {
             insets
         }
 
+        dao = UserDatabase.getDatabase(this).expenseDao()
+
+
         bindViews()
         setupCategorySpinner()
         setupDatePickers()
@@ -90,8 +95,6 @@ class Create_Expense : AppCompatActivity() {
         btnEndDate         = findViewById(R.id.btnExpenseEndDate)
         inputSpendingLimit = findViewById(R.id.editExpenseSpendingLimit)
         inputAddMoney      = findViewById(R.id.editExpenseAddMoney)
-        btnAttachDoc       = findViewById(R.id.btnAttachDocument)
-        txtDocCount        = findViewById(R.id.txtDocumentCount)
         btnSave            = findViewById(R.id.btnSaveExpense)
         btnCancel          = findViewById(R.id.btnCancelExpense)
     }
@@ -102,152 +105,157 @@ class Create_Expense : AppCompatActivity() {
             "General", "Home", "Personal", "Car Maintenance",
             "Food & Groceries", "Entertainment", "Travel", "Education", "Health"
         )
-        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        inputCategory.adapter = spinnerAdapter
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        inputCategory.adapter = adapter
     }
-
-
 
     private fun setupDatePickers() {
         btnStartDate.text = dateFormat.format(selectedStartDate.time)
         btnEndDate.text   = dateFormat.format(selectedEndDate.time)
 
         btnStartDate.setOnClickListener {
-            DatePickerDialog(
-                this,
-                { _, year, month, day ->
-                    selectedStartDate.set(year, month, day)
-                    btnStartDate.text = dateFormat.format(selectedStartDate.time)
-                },
-                selectedStartDate.get(Calendar.YEAR),
+            DatePickerDialog(this, { _, year, month, day ->
+                selectedStartDate.set(year, month, day)
+                btnStartDate.text = dateFormat.format(selectedStartDate.time)
+            }, selectedStartDate.get(Calendar.YEAR),
                 selectedStartDate.get(Calendar.MONTH),
-                selectedStartDate.get(Calendar.DAY_OF_MONTH)
-            ).show()
+                selectedStartDate.get(Calendar.DAY_OF_MONTH)).show()
         }
 
         btnEndDate.setOnClickListener {
-            DatePickerDialog(
-                this,
-                { _, year, month, day ->
-                    selectedEndDate.set(year, month, day)
-                    btnEndDate.text = dateFormat.format(selectedEndDate.time)
-                },
-                selectedEndDate.get(Calendar.YEAR),
+            DatePickerDialog(this, { _, year, month, day ->
+                selectedEndDate.set(year, month, day)
+                btnEndDate.text = dateFormat.format(selectedEndDate.time)
+            }, selectedEndDate.get(Calendar.YEAR),
                 selectedEndDate.get(Calendar.MONTH),
-                selectedEndDate.get(Calendar.DAY_OF_MONTH)
-            ).show()
+                selectedEndDate.get(Calendar.DAY_OF_MONTH)).show()
         }
     }
 
     private fun setupButtons() {
-        btnAttachDoc.setOnClickListener {
-            pickFileLauncher.launch("*/*")
-        }
-
-        // Cancel always returns to Expense_Module
         btnCancel.setOnClickListener { finish() }
-
         btnSave.setOnClickListener { saveExpense() }
     }
 
-
     private fun handleEditIntent() {
-        editPosition = intent.getIntExtra("position", -1)
-        if (editPosition < 0 || editPosition >= ExpenseRepository.expenses.size) return
+        editExpenseId = intent.getIntExtra("expenseId", -1)
+        if (editExpenseId < 0) return
 
-        val expense = ExpenseRepository.expenses[editPosition]
+        lifecycleScope.launch(Dispatchers.IO) {
+            val expense = dao.getExpenseById(editExpenseId) ?: return@launch
+            withContext(Dispatchers.Main) {
+                screenTitle.text = "Edit Expense"
+                btnSave.text     = "Update Expense"
+                inputName.setText(expense.name)
+                inputDesc.setText(expense.description)
+                inputSpendingLimit.setText(expense.spendingLimit.toString())
+                inputAddMoney.setText(expense.amountAdded.toString())
 
-        screenTitle.text = "Edit Expense"
-        btnSave.text     = "Update Expense"
+                val spinnerAdapter = inputCategory.adapter as ArrayAdapter<*>
+                for (i in 0 until spinnerAdapter.count) {
+                    if (spinnerAdapter.getItem(i).toString() == expense.category) {
+                        inputCategory.setSelection(i)
+                        break
+                    }
+                }
 
-        inputName.setText(expense.name)
-        inputDesc.setText(expense.description)
-        inputSpendingLimit.setText(expense.spendingLimit.toString())
-        inputAddMoney.setText(expense.amountAdded.toString())
-
-        val spinnerAdapter = inputCategory.adapter as ArrayAdapter<*>
-        for (i in 0 until spinnerAdapter.count) {
-            if (spinnerAdapter.getItem(i).toString() == expense.category) {
-                inputCategory.setSelection(i)
-                break
+                try {
+                    selectedStartDate.time = dateFormat.parse(expense.startDate) ?: selectedStartDate.time
+                    selectedEndDate.time   = dateFormat.parse(expense.endDate)   ?: selectedEndDate.time
+                } catch (_: Exception) { }
+                btnStartDate.text = expense.startDate
+                btnEndDate.text   = expense.endDate
             }
         }
-
-        try {
-            selectedStartDate.time = dateFormat.parse(expense.startDate) ?: selectedStartDate.time
-            selectedEndDate.time   = dateFormat.parse(expense.endDate)   ?: selectedEndDate.time
-        } catch (_: Exception) { }
-        btnStartDate.text = expense.startDate
-        btnEndDate.text   = expense.endDate
-
-        attachedUris.clear()
-        attachedUris.addAll(expense.documentUris)
-        updateDocumentCountLabel()
     }
+
 
     private fun saveExpense() {
-    val name     = inputName.text.toString().trim()
-    val desc     = inputDesc.text.toString().trim()
-    val category = inputCategory.selectedItem?.toString() ?: "General"
-    val limitStr = inputSpendingLimit.text.toString().trim()
-    val addStr   = inputAddMoney.text.toString().trim()
+        val name = inputName.text.toString().trim()
+        val desc = inputDesc.text.toString().trim()
+        val category = inputCategory.selectedItem?.toString() ?: "General"
+        val limitStr = inputSpendingLimit.text.toString().trim()
+        val addStr = inputAddMoney.text.toString().trim()
 
-    if (name.isEmpty()) {
-        Toast.makeText(this, "Expense name is required", Toast.LENGTH_SHORT).show()
-        return
-    }
-    if (limitStr.isEmpty()) {
-        Toast.makeText(this, "Spending limit is required", Toast.LENGTH_SHORT).show()
-        return
-    }
-    val limit = limitStr.toIntOrNull()
-    if (limit == null || limit <= 0) {
-        Toast.makeText(this, "Spending limit must be a valid positive number", Toast.LENGTH_SHORT).show()
-        return
-    }
-    val added = if (addStr.isEmpty()) 0 else addStr.toIntOrNull() ?: run {
-        Toast.makeText(this, "Amount added must be a valid number", Toast.LENGTH_SHORT).show()
-        return
-    }
-    if (added < 0) {
-        Toast.makeText(this, "Amount added cannot be negative", Toast.LENGTH_SHORT).show()
-        return
-    }
-    if (added > limit) {
-        Toast.makeText(this, "Amount added cannot exceed the spending limit", Toast.LENGTH_SHORT).show()
-        return
-    }
-    if (selectedEndDate.before(selectedStartDate)) {
-        Toast.makeText(this, "End date cannot be before start date", Toast.LENGTH_SHORT).show()
-        return
-    }
+        if (name.isEmpty()) {
+            Toast.makeText(this, "Expense name is required", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (limitStr.isEmpty()) {
+            Toast.makeText(this, "Spending limit is required", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val limit = limitStr.toIntOrNull()
+        if (limit == null || limit <= 0) {
+            Toast.makeText(
+                this,
+                "Spending limit must be a valid positive number",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+        val added = if (addStr.isEmpty()) 0 else addStr.toIntOrNull() ?: run {
+            Toast.makeText(this, "Amount added must be a valid number", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (added < 0) {
+            Toast.makeText(this, "Amount added cannot be negative", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (added > limit) {
+            Toast.makeText(
+                this,
+                "Amount added cannot exceed the spending limit",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+        if (selectedEndDate.before(selectedStartDate)) {
+            Toast.makeText(this, "End date cannot be before start date", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-    val expense = Expense(
-        name          = name,
-        description   = desc,
-        category      = category,
-        startDate     = btnStartDate.text.toString(),
-        endDate       = btnEndDate.text.toString(),
-        spendingLimit = limit,
-        amountAdded   = added,
-        documentUris  = attachedUris.toMutableList()
-    )
+        val currentUser = UserSession.currentUser
+        if (currentUser == null) {
+            Toast.makeText(this, "No user logged in", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-    if (editPosition >= 0) {
-        ExpenseRepository.expenses[editPosition] = expense
-        Toast.makeText(this, "Expense updated!", Toast.LENGTH_SHORT).show()
-    } else {
-        ExpenseRepository.expenses.add(expense)
-        Toast.makeText(this, "Expense saved!", Toast.LENGTH_SHORT).show()
+        val expense = Expense(
+            id = if (editExpenseId >= 0) editExpenseId else 0,
+            userId = currentUser.id,
+            name = name,
+            description = desc,
+            category = category,
+            startDate = btnStartDate.text.toString(),
+            endDate = btnEndDate.text.toString(),
+            spendingLimit = limit,
+            amountAdded = added,
+            //documentUris  = attachedUris.toMutableList()
+        )
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            if (editExpenseId >= 0) {
+                dao.updateExpense(expense)
+            } else {
+                dao.insertExpense(expense)
+            }
+            withContext(Dispatchers.Main) {
+                Toast.makeText(
+                    this@Create_Expense,
+                    if (editExpenseId >= 0) "Expense updated!" else "Expense saved!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                finish()
+            }
+        }
     }
-
-    // Return to Expense_Module — its onResume() refreshes the table
-    finish()
 }
 
+/*
     private fun updateDocumentCountLabel() {
         txtDocCount.text = if (attachedUris.isEmpty()) "No documents attached"
         else "${attachedUris.size} document${if (attachedUris.size == 1) "" else "s"} attached"
     }
-}
+}*/

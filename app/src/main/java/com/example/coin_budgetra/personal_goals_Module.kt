@@ -1,6 +1,5 @@
 package com.example.coin_budgetra
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -11,19 +10,27 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 class personal_goals_Module : AppCompatActivity() {
 
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: GoalAdapter
-    private val goalsList = GoalRepository.goals
+    private val goalsList = mutableListOf<Goal>()
+    private lateinit var dao: GoalDao
 
     private val addGoalLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        if (result.resultCode != Activity.RESULT_OK) return@registerForActivityResult
+        if (result.resultCode != RESULT_OK)
+            return@registerForActivityResult
+
         val data = result.data ?: return@registerForActivityResult
 
         val name = data.getStringExtra("goalName") ?: "Unnamed Goal"
@@ -31,40 +38,60 @@ class personal_goals_Module : AppCompatActivity() {
         val description = data.getStringExtra("goalDescription") ?: ""
         val category = data.getStringExtra("goalCategory") ?: ""
         val isEdit = data.getBooleanExtra("isEdit", false)
-        val position = data.getIntExtra("position", -1)
+        val goalId = data.getIntExtra("goalId", -1)
 
-        val amount = try {
-            amountStr.toInt()
-        } catch (e: NumberFormatException) {
+        //val position = data.getIntExtra("position", -1)
+
+        val amount = amountStr.toIntOrNull() ?: run {
             Toast.makeText(this, "Invalid amount", Toast.LENGTH_SHORT).show()
             return@registerForActivityResult
         }
 
+        val userId = UserSession.currentUser?.id ?: return@registerForActivityResult
 
 
-        if (isEdit && position >= 0 && position < goalsList.size) {
-            goalsList[position].apply {
-                this.name = name
-                this.description = description
-                this.category = category
-                this.targetAmount = amount
+
+
+        if (isEdit && goalId >= 0) {
+            val existing = goalsList.find { it.id == goalId } ?: return@registerForActivityResult
+            val updated = existing.copy(
+                name = name,
+                description = description,
+                category = category,
+                targetAmount = amount
+            )
+            lifecycleScope.launch(Dispatchers.IO) {
+
+                dao.updateGoal(updated)
+                withContext(Dispatchers.Main) {
+                    val idx = goalsList.indexOfFirst { it.id == goalId }
+                    if (idx >= 0) goalsList[idx] = updated
+                    adapter.refreshList()
+                    updateTotalSavings()
+                }
             }
         } else {
             val initialSaved = data.getIntExtra("goalInitialSaved", 0)
-            goalsList.add(
-                Goal(
-                    name = name,
-                    description = description,
-                    category = if (category.isNotEmpty()) category else "General",
-                    targetAmount = amount,
-                    savedAmount = initialSaved
-                )
+            val newGoal = Goal(
+                userId = userId,
+                name = name,
+                description = description,
+                category = category.ifEmpty { "General" },
+                targetAmount = amount,
+                savedAmount = initialSaved
             )
+            lifecycleScope.launch (Dispatchers.IO){
+                dao.insertGoal(newGoal)
+                val goals = dao.getGoalsForUser(userId)
+                withContext(Dispatchers.Main) {
+                    goalsList.clear()
+                    goalsList.addAll(goals)
+                    adapter.refreshList()
+                    updateTotalSavings()
+                }
+            }
         }
-        adapter.refreshList()
-        updateTotalSavings(goalsList)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,13 +104,14 @@ class personal_goals_Module : AppCompatActivity() {
             insets
 
         }
-
+dao = UserDatabase.getDatabase(this).goalDao()
         recyclerView = findViewById(R.id.recyclerGoals)
 
-        adapter = GoalAdapter(goalsList, { goal, position ->
+
+        adapter = GoalAdapter(goalsList, { goal, _->
             val intent = Intent(this, Add_goal::class.java).apply {
                 putExtra("isEdit", true)
-                putExtra("position", position)
+                putExtra("goalId", goal.id)
                 putExtra("name", goal.name)
                 putExtra("description", goal.description)
                 putExtra("category", goal.category)
@@ -92,7 +120,7 @@ class personal_goals_Module : AppCompatActivity() {
             }
             addGoalLauncher.launch(intent)
         }, {
-            updateTotalSavings(goalsList)
+            updateTotalSavings()
         })
 
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -100,27 +128,40 @@ class personal_goals_Module : AppCompatActivity() {
 
         // Filter buttons
         findViewById<Button>(R.id.btnFilterAll).setOnClickListener {
-            adapter.applyFilter("All")
-            updateFilterButtons("All")
+            adapter.applyFilter("All"); updateFilterButtons("All")
         }
         findViewById<Button>(R.id.btnFilterActive).setOnClickListener {
-            adapter.applyFilter("Active")
-            updateFilterButtons("Active")
+            adapter.applyFilter("Active"); updateFilterButtons("Active")
         }
         findViewById<Button>(R.id.btnFilterCompleted).setOnClickListener {
-            adapter.applyFilter("Completed")
-            updateFilterButtons("Completed")
+            adapter.applyFilter("Completed"); updateFilterButtons("Completed")
         }
         findViewById<Button>(R.id.button16).setOnClickListener {
             startActivity(Intent(this, Dashboard_Module::class.java))
         }
-
-        // Add new goal
         findViewById<Button>(R.id.buttonAddGoal).setOnClickListener {
             addGoalLauncher.launch(Intent(this, Add_goal::class.java))
         }
 
-        updateTotalSavings(goalsList)
+        loadGoals()
+    }
+
+    override fun onResume(){
+        super.onResume()
+        loadGoals()
+    }
+
+    private fun loadGoals(){
+        val userId = UserSession.currentUser?.id ?: return
+        lifecycleScope.launch (Dispatchers.IO){
+            val goals = dao.getGoalsForUser(userId)
+            withContext(Dispatchers.Main){
+                goalsList.clear()
+                goalsList.addAll(goals)
+                adapter.refreshList()
+                updateTotalSavings()
+            }
+        }
     }
         private fun updateFilterButtons(active: String) {
             val btnAll = findViewById<Button>(R.id.btnFilterAll)
@@ -136,8 +177,8 @@ class personal_goals_Module : AppCompatActivity() {
             }
         }
 
-    private fun updateTotalSavings(goals :List<Goal>){
-        val total = GoalRepository.goals.sumOf{
+    private fun updateTotalSavings(){
+        val total = goalsList.sumOf{
             it.savedAmount
         }
 

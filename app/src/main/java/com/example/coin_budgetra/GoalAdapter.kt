@@ -12,6 +12,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class GoalAdapter(
     private val goals: MutableList<Goal>,
@@ -21,6 +25,7 @@ class GoalAdapter(
 
     var currentFilter: String = "All"
     private var filteredGoals: MutableList<Goal> = goals.toMutableList()
+
 
     fun applyFilter(filter: String) {
         currentFilter = filter
@@ -38,6 +43,8 @@ class GoalAdapter(
     }
 
     class GoalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        val dao: GoalDao = UserDatabase.getDatabase(itemView.context).goalDao()
         val txtName: TextView = itemView.findViewById(R.id.txtGoalName)
         val txtStatus: TextView = itemView.findViewById(R.id.txtStatus)
         val txtDescription: TextView = itemView.findViewById(R.id.txtDescription)
@@ -123,20 +130,28 @@ class GoalAdapter(
 
             val newTotal = goal.savedAmount + amountToAdd
 
-            if (newTotal > goal.targetAmount)
-            {
+            if (newTotal > goal.targetAmount) {
                 val remaining = goal.targetAmount - goal.savedAmount
-                Toast.makeText(holder.itemView.context,
-                "Only R$remaining remaining to reach target. ",
-                Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    holder.itemView.context,
+                    "Only R$remaining remaining to reach target. ",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
 
             }
-            goal.savedAmount = newTotal
 
-            holder.inputAdd.text.clear()
-            refreshList()
-            onTotalChanged()
+            val updated = goal.copy(savedAmount = newTotal)
+            CoroutineScope(Dispatchers.IO).launch {
+                holder.dao.updateGoal(updated)
+                withContext(Dispatchers.Main) {
+                    val idx = goals.indexOf(goal)
+                    if (idx >= 0) goals[idx] = updated
+                    holder.inputAdd.text.clear()
+                    refreshList()
+                    onTotalChanged()
+                }
+            }
         }
 
         holder.btnEdit.setOnClickListener {
@@ -158,17 +173,22 @@ class GoalAdapter(
                 .setMessage("Are you sure you want to delete \"${goal.name}\"?")
 
                 .setPositiveButton("Delete") { dialog, _ ->
-                    val realIndex = goals.indexOf(filteredGoals[pos])
-                    if (realIndex >= 0) goals.removeAt(realIndex)
-                    refreshList()
-                    onTotalChanged()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        holder.dao.deleteGoal(goal)
+                        withContext(Dispatchers.Main) {
+
+                            val realIndex = goals.indexOf(filteredGoals[pos])
+                            if (realIndex >= 0) goals.removeAt(realIndex)
+                            refreshList()
+                            onTotalChanged()
+                        }
+                    }
                     dialog.dismiss()
                 }
                     .setNegativeButton("Cancel") { dialog, _ ->
                         dialog.dismiss()
                     }
                 .show()
-
-                }
         }
     }
+}

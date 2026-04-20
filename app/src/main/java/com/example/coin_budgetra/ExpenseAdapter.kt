@@ -11,6 +11,10 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class ExpenseAdapter(
@@ -19,12 +23,16 @@ class ExpenseAdapter(
     private val onTotalChanged: () -> Unit
 ) : RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
 
+    // private lateinit var dao: ExpenseDao
+
     class ExpenseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        val dao: ExpenseDao = UserDatabase.getDatabase(itemView.context).expenseDao()
         val txtName:      TextView = itemView.findViewById(R.id.txtExpenseName)
         val txtCategory:  TextView = itemView.findViewById(R.id.txtExpenseCategory)
         val txtBudget:    TextView = itemView.findViewById(R.id.txtExpenseBudget)
         val txtProgress:  TextView = itemView.findViewById(R.id.txtExpenseProgress)
-        val txtDocuments: TextView = itemView.findViewById(R.id.txtExpenseDocuments)
+      // val txtDocuments: TextView = itemView.findViewById(R.id.txtExpenseDocuments)
         val btnAdd:       Button   = itemView.findViewById(R.id.btnExpenseAdd)
         val btnEdit:      Button   = itemView.findViewById(R.id.btnExpenseEdit)
         val btnDelete:    Button   = itemView.findViewById(R.id.btnExpenseDelete)
@@ -46,19 +54,20 @@ class ExpenseAdapter(
         holder.txtCategory.text  = expense.category.ifEmpty { "General" }
         holder.txtBudget.text    = "R${expense.spendingLimit}"
         bindProgress(holder, expense)
-        holder.txtDocuments.text = if (expense.documentUris.isEmpty()) "None"
-        else "${expense.documentUris.size} Document${if (expense.documentUris.size == 1) "" else "s"}"
+        //holder.txtDocuments.text = "None"
+
 
         holder.btnAdd.setOnClickListener {
             val pos = holder.adapterPosition
-            if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
+            if (pos == RecyclerView.NO_POSITION)
+                return@setOnClickListener
             val exp = expenses[pos]
 
-            // If already at the limit, nothing to add
+            // If already at the limit, and there is nothing more to add
             if (exp.amountAdded >= exp.spendingLimit) {
                 Toast.makeText(
                     holder.itemView.context,
-                    "Budget limit already reached for \"${exp.name}\"",
+                    "You have reached the limit of your budget Budget for : \"${exp.name}\"",
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
@@ -68,11 +77,11 @@ class ExpenseAdapter(
             // Show a simple input dialog
             val input = EditText(holder.itemView.context).apply {
                 inputType = InputType.TYPE_CLASS_NUMBER
-                hint = "Amount to add (R)"
+                hint = "Amount to add (R) : "
             }
 
             AlertDialog.Builder(holder.itemView.context)
-                .setTitle("Add money to \"${exp.name}\"")
+                .setTitle("Add money to : \"${exp.name}\"")
                 .setMessage("Remaining: R${exp.spendingLimit - exp.amountAdded}")
                 .setView(input)
                 .setPositiveButton("Add") { dialog, _ ->
@@ -82,25 +91,24 @@ class ExpenseAdapter(
                             Toast.makeText(holder.itemView.context, "Please enter a valid amount", Toast.LENGTH_SHORT).show()
                         exp.amountAdded + toAdd > exp.spendingLimit -> {
                             val remaining = exp.spendingLimit - exp.amountAdded
-                            Toast.makeText(
-                                holder.itemView.context,
-                                "Only R$remaining remaining before the limit",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(holder.itemView.context,
+                                "Only R$remaining remaining before the limit", Toast.LENGTH_SHORT).show()
                         }
                         else -> {
-                            exp.amountAdded += toAdd
-                            notifyItemChanged(pos)
-                            onTotalChanged()
-                            Toast.makeText(
-                                holder.itemView.context,
-                                "R$toAdd added to \"${exp.name}\"",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            val updated = exp.copy(amountAdded = exp.amountAdded + toAdd)
+                            CoroutineScope(Dispatchers.IO).launch {
+                                holder.dao.updateExpense(updated)
+                                withContext(Dispatchers.Main) {
+                                    expenses[pos] = updated
+                                    notifyItemChanged(pos)
+                                    onTotalChanged()
+                                    Toast.makeText(holder.itemView.context,
+                                        "R$toAdd added to : \"${exp.name}\"", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
                     }
                     dialog.dismiss()
-
                 }
                 .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
                 .show()
@@ -109,29 +117,35 @@ class ExpenseAdapter(
 
         holder.btnEdit.setOnClickListener {
             val pos = holder.adapterPosition
-            if (pos != RecyclerView.NO_POSITION) onEditClicked(expenses[pos], pos)
+            if (pos != RecyclerView.NO_POSITION)
+                onEditClicked(expenses[pos], pos)
         }
 
         holder.btnDelete.setOnClickListener {
             val pos = holder.adapterPosition
             if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
             AlertDialog.Builder(holder.itemView.context)
-                .setTitle("Delete expense?")
-                .setMessage("Are you sure you want to delete \"${expense.name}\"? This cannot be undone.")
+                .setTitle("Delete expense ?")
+                .setMessage("Are you sure you want to delete : \"${expense.name}\"? This cannot be undone.")
                 .setPositiveButton("Delete") { dialog, _ ->
-                    if (pos < expenses.size) {
-                        expenses.removeAt(pos)
-                        notifyItemRemoved(pos)
-                        notifyItemRangeChanged(pos, expenses.size)
-                        onTotalChanged()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        holder.dao.deleteExpense(expense)
+                        withContext(Dispatchers.Main) {
+                            if (pos < expenses.size) {
+                                expenses.removeAt(pos)
+                                notifyItemRemoved(pos)
+                                notifyItemRangeChanged(pos, expenses.size)
+                                onTotalChanged()
+                            }
+                        }
                     }
                     dialog.dismiss()
                 }
                 .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
                 .show()
         }
-
     }
+
 
     private fun bindProgress(holder: ExpenseViewHolder, expense: Expense) {
         val added = expense.amountAdded

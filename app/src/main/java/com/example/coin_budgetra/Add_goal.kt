@@ -53,7 +53,7 @@ class Add_goal : AppCompatActivity() {
         val saveBtn          = findViewById<Button>(R.id.button19)
 
         val isEdit   = intent.getBooleanExtra("isEdit", false)
-        val position = intent.getIntExtra("position", -1)
+       // val position = intent.getIntExtra("position", -1)
 
 
         spinnerAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item,defaultCategories)
@@ -119,7 +119,8 @@ class Add_goal : AppCompatActivity() {
                 putExtra("goalCategory",     category)
                 putExtra("goalInitialSaved", initialAmount)
                 putExtra("isEdit",           isEdit)
-                if (isEdit) putExtra("position", position)
+                if (isEdit) putExtra("goalId", intent.getIntExtra("goalId", -1))
+
             })
 
             finish()
@@ -127,7 +128,12 @@ class Add_goal : AppCompatActivity() {
     }
 
     private fun showAddCategoryDialog(spinner: Spinner) {
-        val input = EditText(this).apply { hint = "Enter new category name"; textSize = 14f; setPadding(48, 32, 48, 32) }
+        val input = EditText(this).apply{
+            hint = "Enter new category name"
+            textSize = 14f
+            setPadding(48, 32, 48, 32)
+        }
+
         AlertDialog.Builder(this)
 
             .setTitle("New Category")

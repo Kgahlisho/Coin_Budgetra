@@ -8,14 +8,21 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 
 class Expense_Module : AppCompatActivity() {
 
     private lateinit var adapter: ExpenseAdapter
     private lateinit var recyclerExpenses: RecyclerView
+    private val expenseList = mutableListOf<Expense>()
+    private lateinit var dao: ExpenseDao
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,13 +35,16 @@ class Expense_Module : AppCompatActivity() {
             insets
         }
 
+        dao = UserDatabase.getDatabase(this).expenseDao()
+
         recyclerExpenses = findViewById(R.id.recyclerExpenses)
 
-        adapter = ExpenseAdapter(ExpenseRepository.expenses, {expense , position ->
+
+        adapter = ExpenseAdapter(expenseList, { expense, _ ->
             val intent = Intent(this, Create_Expense::class.java)
-            intent.putExtra("position", position)
+            intent.putExtra("expenseId", expense.id)
             startActivity(intent)
-        },{
+        }, {
             updateTotalExpenses()
         })
 
@@ -42,28 +52,50 @@ class Expense_Module : AppCompatActivity() {
         recyclerExpenses.adapter = adapter
 
 
-        val btnCreateExpense = findViewById<Button>(R.id.button9)
-        btnCreateExpense.setOnClickListener {
+        findViewById<Button>(R.id.button9).setOnClickListener {
             startActivity(Intent(this, Create_Expense::class.java))
         }
 
-        val btnBack = findViewById<Button>(R.id.button15)
-        btnBack.setOnClickListener {
+        findViewById<Button>(R.id.button15).setOnClickListener {
             startActivity(Intent(this, Dashboard_Module::class.java))
         }
-        updateTotalExpenses()
+        loadExpenses()
     }
+
 
     override fun onResume() {
         super.onResume()
         adapter.refreshList()
-        updateTotalExpenses()
+        loadExpenses()
     }
-    
+
+    private fun loadExpenses() {
+
+    val userId = UserSession.currentUser?.id ?:return
+
+        lifecycleScope.launch(Dispatchers.IO){
+        val expenses = dao.getExpensesForUser(userId)
+        withContext(Dispatchers.Main){
+            expenseList.clear()
+            expenseList.addAll(expenses)
+            adapter.refreshList()
+            updateTotalExpenses()
+        }
+
+    }
+
+
+    }
+
     private fun updateTotalExpenses() {
-        val total = ExpenseRepository.expenses.sumOf {
+        val total = expenseList.sumOf {
             it.amountAdded
         }
-        val txtTotal = findViewById<TextView>(R.id.txtTotalExpenses)
-        txtTotal.text = "Spent: R$total  |  Budget: R${ExpenseRepository.expenses.sumOf { it.spendingLimit }}"}
+        val budget = expenseList.sumOf {
+            it.spendingLimit
+        }
+        findViewById<TextView>(R.id.txtTotalExpenses).text =
+            "Spent: R$total  |  Budget: R$budget "
+    }
+
 }

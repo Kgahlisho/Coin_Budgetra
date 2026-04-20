@@ -21,7 +21,6 @@ class Dashboard_Module : AppCompatActivity() {
 
     private lateinit var dao: ExpenseDao
     private lateinit var goalDao: GoalDao
-
     private lateinit var challengeDao: ChallengeDao
     private fun updateDashboardTotals() {
         val userId = UserSession.currentUser?.id?: return
@@ -49,6 +48,7 @@ class Dashboard_Module : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updateDashboardTotals()
+        loadAchievements()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -115,11 +115,7 @@ class Dashboard_Module : AppCompatActivity() {
                 .show()
         }
 
-       /* val db = UserDatabase.getDatabase(this)
-        val goalDao = db.goalDao()
-        val expenseDao = db.expenseDao()
-*/
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
 
            // val email = UserSession.getUserEmail(this@Dashboard_Module)
            // val user = db.userDao().getUserByEmail(email!!)
@@ -130,42 +126,58 @@ class Dashboard_Module : AppCompatActivity() {
             val completedExpenses = dao.getCompletedExpenses(userId)
             val completedChallenges = challengeDao.getCompletedChallenges(userId)
 
-            runOnUiThread {
-                showAchievements(completedGoals, completedExpenses , completedChallenges)
+            withContext(Dispatchers.Main){
+                showAchievements(completedGoals,completedExpenses,completedChallenges)
             }
         }
-
-
     }
 
-    fun showAchievements(goals: List<Goal>, expenses: List<Expense>, challenges: List<Challenge>)
-    {
+    private fun loadAchievements() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val userId = UserSession.currentUser?.id ?: return@launch
+            val completedGoals      = goalDao.getCompletedGoals(userId)
+            val completedExpenses   = dao.getCompletedExpenses(userId)
+            val completedChallenges = challengeDao.getCompletedChallenges(userId)
+            withContext(Dispatchers.Main) {
+                showAchievements(completedGoals, completedExpenses, completedChallenges)
+            }
+        }
+    }
 
-        val container = findViewById<LinearLayout>(R.id.achievementContainer)
+    private fun showAchievements(goals: List<Goal>, expenses: List<Expense>, challenges: List<Challenge>) {
+        val container = findViewById<android.widget.LinearLayout>(R.id.achievementContainer)
         container.removeAllViews()
+
+        if (goals.isEmpty() && expenses.isEmpty() && challenges.isEmpty()) {
+            val tv = TextView(this)
+            tv.text = "No achievements yet — keep going!"
+            tv.textSize = 11f
+            tv.setTextColor(android.graphics.Color.GRAY)
+            tv.setPadding(0, 8, 0, 8)
+            container.addView(tv)
+            return
+        }
 
         goals.forEach {
             val tv = TextView(this)
-            tv.text = " Goals  : ${it.name}"
-            tv.textSize = 11f
-            tv.setPadding(0,8,0,8)
+            tv.text = "Goal: ${it.name}"
+            tv.textSize = 12f
+            tv.setPadding(0, 8, 0, 8)
             container.addView(tv)
         }
-
         expenses.forEach {
             val tv = TextView(this)
-            tv.text = " Expense Covered : ${it.name}"
-            tv.textSize = 11f
-            tv.setPadding(0,8,0,8)
+            tv.text = "Expense covered: ${it.name}"
+            tv.textSize = 12f
+            tv.setPadding(0, 8, 0, 8)
             container.addView(tv)
         }
-
         challenges.forEach {
-            val tv =TextView(this)
-            tv.text = " Challenge : ${it.name}"
-            tv.textSize = 11f
-            tv.setPadding(0,8,0,8)
+            val tv = TextView(this)
+            tv.text = "Challenge: ${it.name}"
+            tv.textSize = 12f
+            tv.setPadding(0, 8, 0, 8)
             container.addView(tv)
-        }
         }
     }
+}

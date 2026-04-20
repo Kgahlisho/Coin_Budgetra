@@ -102,6 +102,7 @@
             android:text="Achievements :"
             android:textSize="12sp"
             android:layout_marginTop="6dp"
+            android:layout_marginBottom="10dp"
             android:textStyle="bold"
             android:layout_gravity="center_horizontal"/>
 

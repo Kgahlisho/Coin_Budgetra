@@ -1,20 +1,20 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-
-    //this is for the database
-    kotlin("kapt")
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.example.coin_budgetra"
-    compileSdk = 35
+    compileSdk = 34
+    //compileSdk = 34
 
 
     defaultConfig {
         applicationId = "com.example.coin_budgetra"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 34
+//        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -31,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17 //version17
+        targetCompatibility = JavaVersion.VERSION_17 //version17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 }
 dependencies {
@@ -54,10 +54,10 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
 
-//this is for the database
-    implementation ("androidx.room:room-runtime:2.6.1")
-    implementation ("androidx.room:room-ktx:2.6.1")
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
-    kapt("androidx.room:room-compiler:2.6.1")
+
 
 }

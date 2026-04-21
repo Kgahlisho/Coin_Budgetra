@@ -160,24 +160,52 @@ class Dashboard_Module : AppCompatActivity() {
 
         goals.forEach {
             val tv = TextView(this)
-            tv.text = "Goal: ${it.name}"
+            tv.text = "Goal, ${it.name} reached !"
             tv.textSize = 12f
             tv.setPadding(0, 8, 0, 8)
+
+
+            val drawable = getDrawable(R.drawable.check)
+         val size = (16 * resources.displayMetrics.density).toInt()
+//         tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.check,0,0,0)
+           drawable?.setBounds(0,0,40,0)
+            tv.setCompoundDrawables(drawable,null,null,null)
+            tv.compoundDrawablePadding = 12
+            tv.gravity = android.view.Gravity.CENTER_VERTICAL
             container.addView(tv)
+        
         }
         expenses.forEach {
             val tv = TextView(this)
-            tv.text = "Expense covered: ${it.name}"
+            tv.text = "Expense , ${it.name} covered !"
             tv.textSize = 12f
             tv.setPadding(0, 8, 0, 8)
+
+            val drawable = getDrawable(R.drawable.check)
+            val size = (16 * resources.displayMetrics.density).toInt()
+//         tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.check,0,0,0)
+            drawable?.setBounds(0,0,40,0)
+            tv.setCompoundDrawables(drawable,null,null,null)
+            tv.compoundDrawablePadding = 12
+            tv.gravity = android.view.Gravity.CENTER_VERTICAL
             container.addView(tv)
+
         }
         challenges.forEach {
             val tv = TextView(this)
-            tv.text = "Challenge: ${it.name}"
+            tv.text = "Challenge , ${it.name} Complete !"
             tv.textSize = 12f
             tv.setPadding(0, 8, 0, 8)
+
+            val drawable = getDrawable(R.drawable.check)
+            val size = (16 * resources.displayMetrics.density).toInt()
+//         tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.check,0,0,0)
+            drawable?.setBounds(0,0,40,0)
+            tv.setCompoundDrawables(drawable,null,null,null)
+            tv.compoundDrawablePadding = 12
+            tv.gravity = android.view.Gravity.CENTER_VERTICAL
             container.addView(tv)
+
         }
     }
 }

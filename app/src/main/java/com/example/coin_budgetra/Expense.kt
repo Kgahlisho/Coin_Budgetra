@@ -13,7 +13,7 @@ data class Expense (
     @PrimaryKey(autoGenerate = true)
 
     val id: Int = 0,
-    val userId: Int, //every user will have a id
+    val userId: Int, //every user will have an id
 
 
     val name: String,

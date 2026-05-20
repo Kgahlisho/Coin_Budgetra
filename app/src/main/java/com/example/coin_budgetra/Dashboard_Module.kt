@@ -1,7 +1,7 @@
 package com.example.coin_budgetra
 
 import android.app.AlertDialog
-import android.content.Intent
+//import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.LinearLayout
@@ -15,35 +15,76 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
+import android.widget.FrameLayout
+import android.content.Intent
+import androidx.cardview.widget.CardView
 
 class Dashboard_Module : AppCompatActivity() {
 
     private lateinit var dao: ExpenseDao
     private lateinit var goalDao: GoalDao
     private lateinit var challengeDao: ChallengeDao
+
+
+    private var expenses : List<Expense> = emptyList()
+    private var goals : List<Goal> = emptyList()
+    private var challenges : List<Challenge> = emptyList()
+
     private fun updateDashboardTotals() {
-        val userId = UserSession.currentUser?.id?: return
 
-      //  val totalGoals = GoalRepository.goals.sumOf { it.savedAmount }
-        lifecycleScope.launch ( Dispatchers.IO){
+        val userId = UserSession.currentUser?.id ?: return
 
-            val totalExpenses = dao.getTotalSpentForUser(userId) ?: 0
-            val totalGoals = goalDao.getTotalSavedForUser(userId)?: 0
-            val totalChallenges = challengeDao.getTotalSavedForUser(userId)?: 0
-            val net = totalGoals + totalChallenges - totalExpenses
+        lifecycleScope.launch(Dispatchers.IO) {
 
-            withContext(Dispatchers.Main){
+            val totalExpenses =
+                dao.getTotalSpentForUser(userId) ?: 0
 
-                findViewById<TextView>(R.id.txtDashboardGoals).text = "Goals saved : R$totalGoals"
+            val totalGoals =
+                goalDao.getTotalSavedForUser(userId) ?: 0
 
-                findViewById<TextView>(R.id.txtDashboardChallenges).text = "Challenges Saved : R$totalChallenges"
-                findViewById<TextView>(R.id.txtDashboardExpenses).text = "Expenses: R$totalExpenses"
+            val totalChallenges =
+                challengeDao.getTotalSavedForUser(userId) ?: 0
 
-                findViewById<TextView>(R.id.txtNetBalance).text = "Net Balance : R%d".format(net)
+            val totalBudget =
+                dao.getTotalBudgetForUser(userId) ?: 0
+
+            val net =
+                totalGoals + totalChallenges - totalExpenses
+
+            withContext(Dispatchers.Main) {
+
+                // NEW CARD VALUES
+                findViewById<TextView>(R.id.txtFinTotalExpenses).text =
+                    "R$totalExpenses"
+
+                findViewById<TextView>(R.id.txtFinBudget).text =
+                    "R$totalBudget"
+
+                findViewById<TextView>(R.id.txtFinGoalSaved).text =
+                    "R$totalGoals"
+
+                findViewById<TextView>(R.id.txtFinChallengeSaved).text =
+                    "R$totalChallenges"
+
+                val netView =
+                    findViewById<TextView>(R.id.txtFinNetBalance)
+
+                netView.text = "R$net"
+
+                if (net >= 0) {
+                    netView.setTextColor(
+                        android.graphics.Color.parseColor("#2E7D32")
+                    )
+                } else {
+                    netView.setTextColor(
+                        android.graphics.Color.parseColor("#B71C1C")
+                    )
+                }
             }
         }
-     }
+    }
+
+
 
     override fun onResume() {
         super.onResume()
@@ -62,9 +103,29 @@ class Dashboard_Module : AppCompatActivity() {
         }
         //we use the logged-in users name to display in the dashbooard cardview
 
+        val totalBudgetCard = findViewById<CardView>(R.id.cardTotalBudget)
+        val goalsCard = findViewById<CardView>(R.id.cardGoals)
+        val challengesCard = findViewById<CardView>(R.id.cardChallenges)
+
+        totalBudgetCard.setOnClickListener {
+            startActivity(Intent(this, Expense_Module::class.java))
+        }
+
+        goalsCard.setOnClickListener {
+            startActivity(Intent(this, personal_goals_Module::class.java))
+        }
+
+        challengesCard.setOnClickListener {
+            startActivity(Intent(this, Challenges_dash::class.java))
+        }
+
         goalDao = UserDatabase.getDatabase(this).goalDao()
         dao= UserDatabase.getDatabase(this).expenseDao()
         challengeDao = UserDatabase.getDatabase(this).challengeDao()
+
+        loadChartData()
+
+
 
         val user = UserSession.currentUser
         if (user != null){
@@ -130,6 +191,7 @@ class Dashboard_Module : AppCompatActivity() {
                 showAchievements(completedGoals,completedExpenses,completedChallenges)
             }
         }
+
     }
 
     private fun loadAchievements() {
@@ -150,25 +212,25 @@ class Dashboard_Module : AppCompatActivity() {
 
         if (goals.isEmpty() && expenses.isEmpty() && challenges.isEmpty()) {
             val tv = TextView(this)
-            tv.text = "No achievements yet — keep going!"
+            tv.text = "No achievements yet !"
             tv.textSize = 11f
             tv.setTextColor(android.graphics.Color.GRAY)
-            tv.setPadding(0, 8, 0, 8)
+            tv.setPadding(0, 15, 0, 8)
             container.addView(tv)
             return
         }
 
         goals.forEach {
             val tv = TextView(this)
-            tv.text = "Goal, ${it.name} reached !"
+            tv.text = " ${it.name} : Goal has been completed !"
             tv.textSize = 12f
             tv.setPadding(0, 8, 0, 8)
 
 
             val drawable = getDrawable(R.drawable.check)
-         val size = (16 * resources.displayMetrics.density).toInt()
-//         tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.check,0,0,0)
-           drawable?.setBounds(0,0,40,0)
+            val size = (16 * resources.displayMetrics.density).toInt()
+//         tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.check.size,0,0,0)
+           drawable?.setBounds(0,0,20,0)
             tv.setCompoundDrawables(drawable,null,null,null)
             tv.compoundDrawablePadding = 12
             tv.gravity = android.view.Gravity.CENTER_VERTICAL
@@ -177,14 +239,14 @@ class Dashboard_Module : AppCompatActivity() {
         }
         expenses.forEach {
             val tv = TextView(this)
-            tv.text = "Expense , ${it.name} covered !"
+            tv.text = " Your , ${it.name} : expense has been covered !"
             tv.textSize = 12f
             tv.setPadding(0, 8, 0, 8)
 
             val drawable = getDrawable(R.drawable.check)
             val size = (16 * resources.displayMetrics.density).toInt()
 //         tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.check,0,0,0)
-            drawable?.setBounds(0,0,40,0)
+            drawable?.setBounds(0,0,20,0)
             tv.setCompoundDrawables(drawable,null,null,null)
             tv.compoundDrawablePadding = 12
             tv.gravity = android.view.Gravity.CENTER_VERTICAL
@@ -193,19 +255,94 @@ class Dashboard_Module : AppCompatActivity() {
         }
         challenges.forEach {
             val tv = TextView(this)
-            tv.text = "Challenge , ${it.name} Complete !"
+            tv.text = "  Challenge ${it.name} has been Complete !"
             tv.textSize = 12f
             tv.setPadding(0, 8, 0, 8)
 
             val drawable = getDrawable(R.drawable.check)
             val size = (16 * resources.displayMetrics.density).toInt()
 //         tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.check,0,0,0)
-            drawable?.setBounds(0,0,40,0)
+            drawable?.setBounds(0,0,20,0)
             tv.setCompoundDrawables(drawable,null,null,null)
             tv.compoundDrawablePadding = 12
             tv.gravity = android.view.Gravity.CENTER_VERTICAL
             container.addView(tv)
 
         }
+    }
+
+
+    private fun loadChartData() {
+
+        val userId = UserSession.currentUser?.id ?: return
+
+        lifecycleScope.launch(Dispatchers.IO) {
+
+            expenses = dao.getExpensesForUser(userId)
+            goals = goalDao.getGoalsForUser(userId)
+            challenges = challengeDao.getChallengesForUser(userId)
+
+            withContext(Dispatchers.Main) {
+                renderDashboardChart()
+            }
+        }
+    }
+
+    private fun renderDashboardChart() {
+
+        val container =
+            findViewById<FrameLayout>(R.id.dashboardChartContainer)
+
+        container.removeAllViews()
+
+        val totalExpenses =
+            expenses.sumOf { it.amountAdded }.toFloat()
+
+        val totalBudget =
+            expenses.sumOf { it.spendingLimit }.toFloat()
+
+        val totalGoals =
+            goals.sumOf { it.savedAmount }.toFloat()
+
+        val totalChallenges =
+            challenges.sumOf { it.amountSaved }.toFloat()
+
+        val chart = FinanceBarChart(this)
+
+        chart.setBars(
+            listOf(
+                FinanceBarChart.Bar(
+                    "Spent",
+                    totalExpenses,
+                    android.graphics.Color.parseColor("#E53935")
+                ),
+
+                FinanceBarChart.Bar(
+                    "Budget",
+                    totalBudget,
+                    android.graphics.Color.parseColor("#1565C0")
+                ),
+
+                FinanceBarChart.Bar(
+                    "Goals",
+                    totalGoals,
+                    android.graphics.Color.parseColor("#2E7D32")
+                ),
+
+                FinanceBarChart.Bar(
+                    "Challenges",
+                    totalChallenges,
+                    android.graphics.Color.parseColor("#F57F17")
+                )
+            )
+        )
+
+        container.addView(
+            chart,
+            FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                500
+            )
+        )
     }
 }

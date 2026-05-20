@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient1"
     tools:context=".MainActivity">
+
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,12 +32,13 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="8sp"
+        android:layout_width="205dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="105dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="105dp"
-        android:text="The home in which you prosper."
+        android:text="The home in which your values prosper."
+        android:textAlignment="center"
         android:textColor="@color/whitesmoke"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -73,16 +75,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <androidx.constraintlayout.widget.Barrier android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.Barrier
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <Button
@@ -92,10 +98,11 @@
         android:layout_marginStart="63dp"
         android:layout_marginTop="152dp"
         android:layout_marginEnd="75dp"
-        android:text="Sign Up"
-        android:textSize="12sp"
         android:backgroundTint="@color/lemongreen"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="Sign Up"
         android:textColor="@color/black"
+        android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/button2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -106,10 +113,11 @@
         android:layout_height="35dp"
         android:layout_marginTop="153dp"
         android:layout_marginEnd="70dp"
-        android:text="Sign in"
-        android:textSize="12sp"
         android:backgroundTint="@color/lemongreen"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="Sign in"
         android:textColor="@color/black"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/signup_btn"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />

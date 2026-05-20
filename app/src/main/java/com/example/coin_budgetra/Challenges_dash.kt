@@ -1,6 +1,5 @@
 package com.example.coin_budgetra
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -17,23 +16,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
-
 class Challenges_dash : AppCompatActivity() {
-
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ChallengeAdapter
     private val challengeList = mutableListOf<Challenge>()
     private lateinit var dao: ChallengeDao
 
-    private val addChallengeLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
+    private val addChallengeLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode != RESULT_OK) return@registerForActivityResult
         val data = result.data ?: return@registerForActivityResult
-
-
 
         val name        = data.getStringExtra("challengeName")      ?: "Unnamed Challenge"
         val desc        = data.getStringExtra("challengeDesc")      ?: ""
@@ -44,60 +36,30 @@ class Challenges_dash : AppCompatActivity() {
         val amountSaved = data.getIntExtra("challengeAmtSaved",  0)
         val isEdit      = data.getBooleanExtra("isEdit", false)
         val challengeId = data.getIntExtra("challengeId", -1)
-
-        val userId = UserSession.currentUser?.id?:
-            return@registerForActivityResult
-
+        val userId      = UserSession.currentUser?.id ?: return@registerForActivityResult
 
         if (isEdit && challengeId >= 0) {
-            val existing = challengeList.find{
-                it.id == challengeId}?: return@registerForActivityResult
-
-            val updated = existing.copy(
-                name        = name,
-                description = desc,
-                category    = category,
-                startDate   = startDate,
-                endDate     = endDate,
-                budgetMax   = budgetMax,
-                amountSaved = amountSaved)
-            lifecycleScope.launch (Dispatchers.IO){
+            val existing = challengeList.find { it.id == challengeId } ?: return@registerForActivityResult
+            val updated  = existing.copy(name = name, description = desc, category = category, startDate = startDate, endDate = endDate, budgetMax = budgetMax, amountSaved = amountSaved)
+            lifecycleScope.launch(Dispatchers.IO) {
                 dao.updateChallenge(updated)
-                withContext(Dispatchers.Main){
-                    val idx = challengeList.indexOfFirst {
-                        it.id == challengeId}
+                try { FirebaseRepository.saveChallenge(updated) } catch (e: Exception) { e.printStackTrace() }
+                withContext(Dispatchers.Main) {
+                    val idx = challengeList.indexOfFirst { it.id == challengeId }
                     if (idx >= 0) challengeList[idx] = updated
-                    adapter.refreshList()
-                    updatedTotalSaved()
-                    }
+                    adapter.refreshList(); updatedTotalSaved()
                 }
-
-
+            }
         } else {
-            val newChallenge = Challenge(
-                userId = userId,
-                name = name,
-                description = desc,
-                category = category.ifEmpty { "General" },
-                startDate = startDate,
-                endDate = endDate,
-                budgetMax = budgetMax,
-                amountSaved = amountSaved
-            )
-            lifecycleScope.launch (Dispatchers.IO) {
+            val newChallenge = Challenge(userId = userId, name = name, description = desc, category = category.ifEmpty { "General" }, startDate = startDate, endDate = endDate, budgetMax = budgetMax, amountSaved = amountSaved)
+            lifecycleScope.launch(Dispatchers.IO) {
                 dao.insertChallenge(newChallenge)
                 val challenges = dao.getChallengesForUser(userId)
-                withContext(Dispatchers.Main) {
-                    challengeList.clear()
-                    challengeList.addAll(challenges)
-                    adapter.refreshList()
-                    updatedTotalSaved()
-                }
+                try { challenges.lastOrNull { it.name == name && it.userId == userId }?.let { FirebaseRepository.saveChallenge(it) } } catch (e: Exception) { e.printStackTrace() }
+                withContext(Dispatchers.Main) { challengeList.clear(); challengeList.addAll(challenges); adapter.refreshList(); updatedTotalSaved() }
             }
         }
     }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,72 +67,44 @@ class Challenges_dash : AppCompatActivity() {
         setContentView(R.layout.activity_challenge_dash)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom); insets
         }
 
         dao = UserDatabase.getDatabase(this).challengeDao()
         recyclerView = findViewById(R.id.recyclerChallenge)
 
-        adapter = ChallengeAdapter(challengeList , { challenge, _ ->
-            val intent = Intent(this, Add_challenge::class.java).apply {
-                putExtra("isEdit", true)
-                putExtra("challengeId",challenge.id)
-                putExtra("name", challenge.name)
-                putExtra("description", challenge.description)
-                putExtra("category", challenge.category)
-                putExtra("startDate", challenge.startDate)
-                putExtra("endDate", challenge.endDate)
-                putExtra("budgetMax", challenge.budgetMax)
-                putExtra("amountSaved", challenge.amountSaved)
-            }
-
-            addChallengeLauncher.launch(intent)
-        },{
+        adapter = ChallengeAdapter(challengeList, { challenge, _ ->
+            addChallengeLauncher.launch(Intent(this, Add_challenge::class.java).apply {
+                putExtra("isEdit", true); putExtra("challengeId", challenge.id); putExtra("name", challenge.name)
+                putExtra("description", challenge.description); putExtra("category", challenge.category)
+                putExtra("startDate", challenge.startDate); putExtra("endDate", challenge.endDate)
+                putExtra("budgetMax", challenge.budgetMax); putExtra("amountSaved", challenge.amountSaved)
+            })
+        }, { _ ->
+            // Fired from adapter when amount is added — challenge is already synced inside adapter
             updatedTotalSaved()
         })
-
-        //completion logic
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
         findViewById<Button>(R.id.btnBackFromChallengeDash).setOnClickListener { finish() }
-        findViewById<Button>(R.id.btnCreateChallengeGoal).setOnClickListener {
-            addChallengeLauncher.launch(Intent(this, Add_challenge::class.java))
-        }
-        loadChallenges()
+        findViewById<Button>(R.id.btnCreateChallengeGoal).setOnClickListener { addChallengeLauncher.launch(Intent(this, Add_challenge::class.java)) }
 
-    }
-
-    override fun onResume(){
-        super.onResume()
         loadChallenges()
     }
+
+    override fun onResume() { super.onResume(); loadChallenges() }
 
     private fun loadChallenges() {
         val userId = UserSession.currentUser?.id ?: return
         lifecycleScope.launch(Dispatchers.IO) {
             val challenges = dao.getChallengesForUser(userId)
-            withContext(Dispatchers.Main) {
-                challengeList.clear()
-                challengeList.addAll(challenges)
-                adapter.refreshList()
-                updatedTotalSaved()
-            }
+            withContext(Dispatchers.Main) { challengeList.clear(); challengeList.addAll(challenges); adapter.refreshList(); updatedTotalSaved() }
         }
     }
-    private fun updatedTotalSaved(){
-        val total = challengeList.sumOf{
-            it.amountSaved
-        }
-        val txtTotal = findViewById<TextView>(R.id.txtTotalSaved)
-        txtTotal.text = "Total Accumilated : R$total"
+
+    private fun updatedTotalSaved() {
+        findViewById<TextView>(R.id.txtTotalSaved).text = "Total Accumulated: R${challengeList.sumOf { it.amountSaved }}"
     }
 }
-
-
-
-//from the dashboard --> challenges dash --> create a new challenge
-        //challenges dash is going to have all the challenges created by the user meaning the active challenges
-        // also the dash will be consisted with the same flow as the personal goals where user can manipulate ,delete,edit and create a challenege

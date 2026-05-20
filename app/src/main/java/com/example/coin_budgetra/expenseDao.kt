@@ -34,4 +34,6 @@ interface ExpenseDao {
 
     @Query("SELECT SUM(spendingLimit) FROM expenses WHERE userId = :userId")
     suspend fun getTotalBudgetForUser(userId: Int): Int?
+
+
 }

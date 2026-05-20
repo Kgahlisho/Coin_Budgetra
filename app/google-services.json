@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "626923077904",
+    "project_id": "coin-budgetra",
+    "storage_bucket": "coin-budgetra.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:626923077904:android:f2dd6e8ca181322ed1e595",
+        "android_client_info": {
+          "package_name": "com.example.coin_budgetra"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCd-T221hChVzlwGL7k18-w0pqoexOcRSg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

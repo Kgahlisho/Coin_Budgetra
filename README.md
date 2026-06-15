@@ -48,6 +48,8 @@ When designing the UI and UX, we made several deliberate choices to support both
 <img width="700" height="700" alt="PHOTO-2026-03-01-16-05-16" src="https://github.com/user-attachments/assets/c68157e1-9928-4327-8a5e-1363d7574d49" />
 
 
+
+
 -Version Control & Collaboration
 As this was an Open-Source Coding group project with five team members, strict version control was critical for our success.
 -GitHub Repository: We used GitHub to host the project, ultimately consolidating our final, production-ready code into our master branch. This allowed us to work on different features—like UI, authentication, database logic, and the new charting features—simultaneously without overriding each other's code.

@@ -1,4 +1,4 @@
-YouTube link : https://youtu.be/ww8A7D_6neo?feature=shared
+Part 2: YouTube link : https://youtu.be/ww8A7D_6neo?feature=shared
 
 Github : https://github.com/Kgahlisho/Coin_Budgetra/tree/master
 
@@ -9,3 +9,4 @@ Github : https://github.com/Kgahlisho/Coin_Budgetra/tree/master
 
 Apk submitted on ARC 
 
+Final POE:

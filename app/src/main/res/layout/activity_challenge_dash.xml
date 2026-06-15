@@ -9,7 +9,6 @@
     android:background="#F4F6FA"
     tools:context=".Challenges_dash">
 
-
     <Button
         android:id="@+id/btnBackFromChallengeDash"
         android:layout_width="80dp"
@@ -21,14 +20,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
         android:id="@+id/po"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="59dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
-        android:layout_marginEnd="95dp"
+        android:layout_marginEnd="8dp"
         android:gravity="center"
         android:text="Coin Budgetra"
         android:textSize="14sp"
@@ -66,7 +64,7 @@
         android:id="@+id/txtTotalSaved"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="Total accumilated : "
+        android:text="Total Accumulated: R0"
         android:textStyle="bold"
         android:textSize="14sp"
         android:textColor="#2e7d32"
@@ -75,20 +73,72 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <!-- Filter Section -->
+    <LinearLayout
+        android:id="@+id/filterSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTotalSaved">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Filter challenges :"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="#888888"
+            android:letterSpacing="0.1" />
+
+        <!-- Active filter chip (hidden when no filter active) -->
+        <TextView
+            android:id="@+id/txtActiveFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textSize="10sp"
+            android:textColor="#1565C0"
+            android:background="@drawable/filter_chip_bg"
+            android:visibility="gone"
+            tools:text="↑ Highest amount"
+            tools:visibility="visible"/>
+
+        <!-- Filter icon button -->
+        <ImageButton
+            android:id="@+id/btnFilter"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@android:drawable/ic_menu_sort_by_size"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Filter"
+            app:tint="#1565C0" />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerChallenge"
         android:layout_width="0dp"
-        android:layout_height="560dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/btnCreateChallengeGoal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgChallengeLogo" />
+        app:layout_constraintTop_toBottomOf="@+id/filterSection" />
 
     <Button
         android:id="@+id/btnCreateChallengeGoal"

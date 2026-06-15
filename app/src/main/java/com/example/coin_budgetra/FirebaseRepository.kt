@@ -49,6 +49,7 @@ object FirebaseRepository {
     )
 
     // GOALS
+
     suspend fun saveGoal(goal: Goal) {
         db.collection("users")
             .document(goal.userId.toString())

@@ -73,9 +73,15 @@ class ChallengeAdapter(
 
         holder.btnAddMoney.setOnClickListener {
             val pos = holder.adapterPosition; if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
+
             val input = holder.editAddAmount.text.toString().trim()
+
             val toAdd = input.toIntOrNull(); val ch = challenges[pos]
-            if (input.isEmpty() || toAdd == null || toAdd <= 0) { Toast.makeText(holder.itemView.context, "Please enter a valid amount to add", Toast.LENGTH_SHORT).show(); return@setOnClickListener }
+
+            if (input.isEmpty() || toAdd == null || toAdd <= 0) {
+                Toast.makeText(holder.itemView.context, "Please enter a valid amount to add", Toast.LENGTH_SHORT).show();
+                return@setOnClickListener }
+
             val newTotal = ch.amountSaved + toAdd
             if (newTotal > ch.budgetMax) { Toast.makeText(holder.itemView.context, "Only R${ch.budgetMax - ch.amountSaved} remaining to reach the budget max", Toast.LENGTH_SHORT).show(); return@setOnClickListener }
             val updated = ch.copy(amountSaved = newTotal)

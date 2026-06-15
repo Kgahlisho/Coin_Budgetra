@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Coin_Budgetra">
 
+        <activity android:name=".Achievements_Module" android:exported="false" />
 
         <activity android:name=".Challenges_dash" android:exported="false" />
         <activity android:name=".Add_challenge" android:exported="false" />

@@ -43,9 +43,15 @@ When designing the UI and UX, we made several deliberate choices to support both
 
 -Platform Target: We built the app as an APK and tested it via the BlueStacks App Player, focusing heavily on a smooth Android experience.
 
+-Logo Design: The central icon relies on the universally recognized symbol for saving and financial security. By using a piggy bank rather than a traditional bank building or a credit card, the design immediately communicates that the app is approachable and user-centric, aimed at everyday savers rather than corporate entities.The inclusion of three coins dropping into the slot is a subtle but important detail. It represents an active process, continuous saving and wealth accumulation, which aligns perfectly with the app’s focus on logging daily expenses and actively contributing to goals and gamified challenges. The icon is constructed using clean, uniform, rounded line art. This minimalist approach ensures the logo scales down perfectly for mobile app icons and dashboard headers without losing clarity. It feels modern and prevents the piggy bank concept from looking too childish or cartoonish.
+
+<img width="700" height="700" alt="PHOTO-2026-03-01-16-05-16" src="https://github.com/user-attachments/assets/c68157e1-9928-4327-8a5e-1363d7574d49" />
+
+
+
+
 -Version Control & Collaboration
 As this was an Open-Source Coding group project with five team members, strict version control was critical for our success.
-
 -GitHub Repository: We used GitHub to host the project, ultimately consolidating our final, production-ready code into our master branch. This allowed us to work on different features—like UI, authentication, database logic, and the new charting features—simultaneously without overriding each other's code.
 
 -Continuous Integration: We relied on structured workflows to ensure that as different team members pushed new requirements, such as the real-time database syncing or the new badge system, our overall codebase remained stable and fully functional for our final POE submission.

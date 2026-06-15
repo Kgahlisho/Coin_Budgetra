@@ -13,7 +13,7 @@ Apk submitted on ARC
 
 Final POE:
 
-Coin Budgetra is a personal finance and budgeting mobile application. It provides users with a centralized platform to track their money, set goals, and monitor their financial habits. The core features include:
+Coin Budgetra is a personal finance and budgeting mobile application that my team and I developed to provide users with a centralized platform to track their money, set goals, and monitor their financial habits. By integrating Firebase Realtime Database, we evolved the project from a static prototype into a live, cloud-connected application with real-time syncing. Our core features include:
 
 -User Authentication: Secure sign-up and sign-in functionality capturing the user's name, contact details, email, and password.
 

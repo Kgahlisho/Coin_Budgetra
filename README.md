@@ -1,4 +1,6 @@
-Part 2: YouTube link : https://youtu.be/ww8A7D_6neo?feature=shared
+Part 2: 
+
+YouTube link : https://youtu.be/ww8A7D_6neo?feature=shared
 
 Github : https://github.com/Kgahlisho/Coin_Budgetra/tree/master
 
@@ -47,3 +49,14 @@ As this was an Open-Source Coding group project with five team members, strict v
 -GitHub Repository: We used GitHub to host the project, ultimately consolidating our final, production-ready code into our master branch. This allowed us to work on different features—like UI, authentication, database logic, and the new charting features—simultaneously without overriding each other's code.
 
 -Continuous Integration: We relied on structured workflows to ensure that as different team members pushed new requirements, such as the real-time database syncing or the new badge system, our overall codebase remained stable and fully functional for our final POE submission.
+
+-YouTube link : https://youtu.be/ww8A7D_6neo?feature=shared
+
+-Github : https://github.com/Kgahlisho/Coin_Budgetra/tree/master
+
+-Access the master branch for it consists of the entire working project
+
+-Photos of the Application have been included in the submitted Word document on ARC.
+-Whereas it has also been  explained further in detail on the presnetation video as stipulated by the lecturer in present.
+
+-Apk submitted on ARC 
